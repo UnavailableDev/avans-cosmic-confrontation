@@ -8,16 +8,19 @@ from enum import Enum
 #     battleship = 4
 #     commandship = 5
 
+
 class BaseShip:
-    __size: int
-    __position: Pos
-    __hits: bool
-    __ability: bool
-    __cooldown: int
-    
+
     def __init__(self) -> None:
-        pass
-    
-    def action(self):
+        self.size = 3
+        self.position = Pos()
+        self.position.x = -1
+        self.position.y = -1
+        self.position.horizontal = False
+        self.hits = 0
+        self.ability = True
+        self.cooldown = 0
         pass
 
+    def action(self):
+        pass
