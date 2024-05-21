@@ -1,5 +1,4 @@
-pyvenv.cfg
-bin/
+venv
 
 *.pyc
 
