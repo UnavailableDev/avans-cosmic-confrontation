@@ -82,11 +82,11 @@ class GameBoard:
                 # y = row * (self.RECT_HEIGHT + self.MARGIN)
                 # pygame.draw.rect(screen, self.GRID_COLOR, (x, y, self.RECT_WIDTH, self.RECT_HEIGHT))
 
-    def draw_shots(self):
-        for row in range(self.rows):
-            for col in range(self.cols):
-                if (self.shot_positions[row][col] is True):
-                    draw_shot(row, col)
+    # def draw_shots(self):
+    #     for row in range(self.rows):
+    #         for col in range(self.cols):
+    #             if (self.shot_positions[row][col] is True):
+    #                 draw_shot(row, col)
 
     def draw_ships(self):
         print("self.ships len: ", len(self.ships))
@@ -117,7 +117,7 @@ class GameBoard:
 
             self.draw_ships()
 
-            self.draw_shots()
+            # self.draw_shots()
 
             # Update the display
             pygame.display.flip()
