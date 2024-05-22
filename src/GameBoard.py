@@ -90,7 +90,7 @@ class GameBoard:
         for row in range(self.rows):
             for col in range(self.cols):
                 square_color = self.UNSHOT_SQUARE
-                if (self.ai_shot[row][col]):
+                if (self.player_shot[row][col]):
                     square_color = self.SHOT_SQUARE
                 self.draw_square(col, row, square_color)
         #     for row in range(self.rows):
@@ -125,20 +125,19 @@ class GameBoard:
                 self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y +
                                  (j * (not ship_pos.horizontal) + self.rows + 1), self.SHIP_COLOR)
 
-    def click_local_grid(self, offset:Pos = Pos(0, 0)):
+    def click_local_grid(self, offset: Pos = Pos(0, 0)):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = Pos(event.pos[0], event.pos[1])
 
                 cell_width = (self.RECT_WIDTH + self.MARGIN)
                 cell_height = (self.RECT_HEIGHT + self.MARGIN)
-                
+
                 if pos.x > offset.x and pos.x < (offset.x + self.cols * cell_width):
                     if pos.y > offset.y and pos.y < (offset.y + self.rows * cell_height):
-                        return Pos((pos.x - offset.x)//cell_width,(pos.y - offset.y)//cell_height)
-    
-        return None
+                        return Pos((pos.x - offset.x)//cell_width, (pos.y - offset.y)//cell_height)
 
+        return None
 
     def run(self):
         running = True
@@ -157,14 +156,12 @@ class GameBoard:
             self.draw_ships()
 
             foo = self.click_local_grid()
-            if foo != None:
-                
-                print(foo.x, foo.y)
-                self.draw_square(foo.x, foo.y, self.BACKGROUND_COLOR)
-                
+            if foo is not None:
+                self.player_shot[foo.y][foo.x] = True
+
                 # time.sleep(1)
 
-            # self.draw_shots()
+                # self.draw_shots()
 
-            # Update the display
+                # Update the display
             pygame.display.flip()
