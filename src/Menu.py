@@ -1,6 +1,8 @@
 import pygame
 import sys
 
+from ScreenWrapper import ScreenWrapper
+
 
 class Menu:
     def __init__(self, screen, options):

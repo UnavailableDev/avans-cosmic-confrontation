@@ -1,5 +1,6 @@
 import pygame
 from ships import *
+from ScreenWrapper import ScreenWrapper
 from datatypes import Position as Pos
 
 # # Constants
@@ -67,7 +68,7 @@ class GameBoard:
         # TODO
         pass
 
-    def draw_grid(self, screen):
+    def draw_grid(self):
         for row in range(self.rows):
             for col in range(self.cols):
                 self.draw_square(col, row, self.GRID_COLOR)
@@ -91,7 +92,8 @@ class GameBoard:
             # print("ship x: ", ship_pos.x)
 
             for j in range(self.ships[i].get_size()):
-                self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y + (j * (not ship_pos.horizontal)), self.SHIP_COLOR)
+                self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y +
+                                 (j * (not ship_pos.horizontal)), self.SHIP_COLOR)
 
     def run(self):
         running = True
@@ -104,7 +106,7 @@ class GameBoard:
             self.screen.fill(self.BACKGROUND_COLOR)
 
             # Draw the grid
-            self.draw_grid(self.screen)
+            self.draw_grid()
 
             self.draw_ships()
 
