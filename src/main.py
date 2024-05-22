@@ -4,14 +4,14 @@ import sys
 from ships import BaseShip
 from GameBoard import GameBoard
 from Menu import Menu
-from ScreenWrapper import ScreenWrapper
+
 # Initialize Pygame
 pygame.init()
-SCREEN_HEIGHT = 600
-SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 1000
+SCREEN_WIDTH = 1500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # screen = ScreenWrapper(SCREEN_WIDTH, SCREEN_HEIGHT)
-game_board = GameBoard(screen)
+game_board = GameBoard(screen, 10, 10)
 
 
 def game_start():
