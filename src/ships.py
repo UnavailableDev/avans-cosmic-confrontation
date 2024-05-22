@@ -12,13 +12,16 @@ from datatypes import Position as Pos
 class BaseShip:
     __size: int
     __position: Pos
-    __hits: bool
+    __hits: bool = []
     __ability: bool
     __cooldown: int
     
     def __init__(self, size: int) -> None:
         self.__size = size
-        # self.__hits = 
+        self.__hits = [] # For some reason this needs to be reset, otherwise it shares the same array between all child classes
+        for i in range(size):
+            self.__hits.append(False)
+        
         self.__ability = True
         self.__cooldown = 0
     
@@ -31,7 +34,13 @@ class BaseShip:
     def set_position(self, pos: Pos):
         # TODO add position checking
         self.__position = pos
-    
+ 
+    def get_hits(self):
+        return self.__hits
+
+    def set_hit(self, index: int):
+        self.__hits[index] = True
+
     def get_cooldown(self):
         return self.__cooldown
     

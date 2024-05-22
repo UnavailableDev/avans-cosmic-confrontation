@@ -36,7 +36,7 @@ class GameBoard:
         self.cols = self.SCREEN_WIDTH // (self.RECT_WIDTH + self.MARGIN)
         self.rows = self.SCREEN_HEIGHT // (self.RECT_HEIGHT + self.MARGIN)
 
-        self.ships = []
+        self.ships: BaseShip = []
 
         self.ships.append(BattleShip())
         self.ships[0].set_position(Pos(1, 1, False))
@@ -82,13 +82,13 @@ class GameBoard:
     #                 draw_shot(row, col)
 
     def draw_ships(self):
-        print("self.ships len: ", len(self.ships))
+        # print("self.ships len: ", len(self.ships))
         for i in range(len(self.ships)):
-            print(i)
+            # print(i)
             ship_pos: Pos = self.ships[i].get_position()
 
-            print("ship size: ", self.ships[i].get_size())
-            print("ship x: ", ship_pos.x)
+            # print("ship size: ", self.ships[i].get_size())
+            # print("ship x: ", ship_pos.x)
 
             for j in range(self.ships[i].get_size()):
                 self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y + (j * (not ship_pos.horizontal)), self.SHIP_COLOR)
