@@ -24,6 +24,7 @@ def see_previous_games():
 
 
 def exit_game():
+    # TODO actually quit the application
     print("Exitting game")
 
 

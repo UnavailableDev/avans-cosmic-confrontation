@@ -1,5 +1,6 @@
 import pygame
-from ships import BaseShip
+from ships import *
+from datatypes import Position as Pos
 
 # # Constants
 # SCREEN_WIDTH = 800
@@ -37,19 +38,11 @@ class GameBoard:
 
         self.ships = []
 
-        self.ships.append(BaseShip())
+        self.ships.append(BattleShip())
+        self.ships[0].set_position(Pos(1, 1, False))
 
-        self.ships[0].size = 4
-        self.ships[0].position.x = 1
-        self.ships[0].position.y = 1
-        self.ships[0].position.horizontal = False
-
-        self.ships.append(BaseShip())
-
-        self.ships[1].size = 2
-        self.ships[1].position.x = 3
-        self.ships[1].position.y = 6
-        self.ships[1].position.horizontal = True
+        self.ships.append(ScoutShip())
+        self.ships[1].set_position(Pos(3, 6))
 
         self.shot_positions = []
 
@@ -92,15 +85,13 @@ class GameBoard:
         print("self.ships len: ", len(self.ships))
         for i in range(len(self.ships)):
             print(i)
-            ship_x = self.ships[i].position.x
-            ship_y = self.ships[i].position.y
+            ship_pos: Pos = self.ships[i].get_position()
 
-            print("ship size: ", self.ships[i].size)
-            print("ship x: ", self.ships[i].position.x)
+            print("ship size: ", self.ships[i].get_size())
+            print("ship x: ", ship_pos.x)
 
-            ship_horizontal = self.ships[i].position.horizontal
-            for j in range(self.ships[i].size):
-                self.draw_square(ship_x + (j * ship_horizontal), ship_y + (j * (not ship_horizontal)), self.SHIP_COLOR)
+            for j in range(self.ships[i].get_size()):
+                self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y + (j * (not ship_pos.horizontal)), self.SHIP_COLOR)
 
     def run(self):
         running = True
