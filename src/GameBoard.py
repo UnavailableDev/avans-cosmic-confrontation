@@ -2,6 +2,8 @@ import pygame
 from ships import BaseShip, BattleShip, ScoutShip
 from datatypes import Position as Pos
 
+import time
+
 # # Constants
 # SCREEN_WIDTH = 800
 # SCREEN_HEIGHT = 600
@@ -123,6 +125,21 @@ class GameBoard:
                 self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y +
                                  (j * (not ship_pos.horizontal) + self.rows + 1), self.SHIP_COLOR)
 
+    def click_local_grid(self, offset:Pos = Pos(0, 0)):
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = Pos(event.pos[0], event.pos[1])
+
+                cell_width = (self.RECT_WIDTH + self.MARGIN)
+                cell_height = (self.RECT_HEIGHT + self.MARGIN)
+                
+                if pos.x > offset.x and pos.x < (offset.x + self.cols * cell_width):
+                    if pos.y > offset.y and pos.y < (offset.y + self.rows * cell_height):
+                        return Pos((pos.x - offset.x)//cell_width,(pos.y - offset.y)//cell_height)
+    
+        return None
+
+
     def run(self):
         running = True
         while running:
@@ -138,6 +155,14 @@ class GameBoard:
             self.draw_player_grid()
 
             self.draw_ships()
+
+            foo = self.click_local_grid()
+            if foo != None:
+                
+                print(foo.x, foo.y)
+                self.draw_square(foo.x, foo.y, self.BACKGROUND_COLOR)
+                
+                # time.sleep(1)
 
             # self.draw_shots()
 
