@@ -1,5 +1,5 @@
 import pygame
-from ships import *
+from ships import BaseShip, BattleShip, ScoutShip
 from datatypes import Position as Pos
 
 # # Constants
@@ -21,38 +21,46 @@ from datatypes import Position as Pos
 
 
 class GameBoard:
-    def __init__(self, screen):
+    def __init__(self, screen, rows, cols):
         # Constants
-        self.SCREEN_HEIGHT = 600
-        self.SCREEN_WIDTH = 800
+        self.SCREEN_HEIGHT = screen.get_height()
+        self.SCREEN_WIDTH = screen.get_width()
 
         self.BACKGROUND_COLOR = (0, 0, 0)
         self.GRID_COLOR = (255, 255, 255)
+        self.SHOT_SQUARE = (0, 255, 255)
+        self.UNSHOT_SQUARE = (255, 255, 255)
         self.SHIP_COLOR = (48, 69, 77)
 
-        self.RECT_WIDTH = 50
-        self.RECT_HEIGHT = 50
+        self.PLAYER_GRID_OFFSET = 50
+
+        self.RECT_WIDTH = 30
+        self.RECT_HEIGHT = 30
         self.MARGIN = 5  # Space between rectangles
-        self.cols = self.SCREEN_WIDTH // (self.RECT_WIDTH + self.MARGIN)
-        self.rows = self.SCREEN_HEIGHT // (self.RECT_HEIGHT + self.MARGIN)
+        self.cols = cols
+        self.rows = rows
 
-        self.ships: BaseShip = []
+        self.ships_player: BaseShip = []
 
-        self.ships.append(BattleShip())
-        self.ships[0].set_position(Pos(1, 1, False))
+        self.ships_player.append(BattleShip())
+        self.ships_player[0].set_position(Pos(1, 1, False))
 
-        self.ships.append(ScoutShip())
-        self.ships[1].set_position(Pos(3, 6))
+        self.ships_player.append(ScoutShip())
+        self.ships_player[1].set_position(Pos(3, 6))
 
-        self.shot_positions = []
-
-        array_2d = []
-        for i in range(10):
+        self.player_shot = []
+        for i in range(rows):
             inner_array = []
-            for j in range(10):
+            for j in range(cols):
                 inner_array.append(False)
-            array_2d.append(inner_array)
+            self.player_shot.append(inner_array)
 
+        self.ai_shot = []
+        for i in range(rows):
+            inner_array = []
+            for j in range(cols):
+                inner_array.append(False)
+            self.ai_shot.append(inner_array)
         # Set up the display
         # self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         self.screen = screen
@@ -67,31 +75,53 @@ class GameBoard:
         # TODO
         pass
 
-    def draw_grid(self, screen):
-        for row in range(self.rows):
-            for col in range(self.cols):
-                self.draw_square(col, row, self.GRID_COLOR)
-                # x = col * (self.RECT_WIDTH + self.MARGIN)
-                # y = row * (self.RECT_HEIGHT + self.MARGIN)
-                # pygame.draw.rect(screen, self.GRID_COLOR, (x, y, self.RECT_WIDTH, self.RECT_HEIGHT))
-
-    # def draw_shots(self):
+    # def draw_grid(self):
     #     for row in range(self.rows):
     #         for col in range(self.cols):
-    #             if (self.shot_positions[row][col] is True):
-    #                 draw_shot(row, col)
+    #             square color
+    #             self.draw_square(col, row, self.GRID_COLOR)
+    #             # x = col * (self.RECT_WIDTH + self.MARGIN)
+    #             # y = row * (self.RECT_HEIGHT + self.MARGIN)
+    #             # pygame.draw.rect(screen, self.GRID_COLOR, (x, y, self.RECT_WIDTH, self.RECT_HEIGHT))
+
+    def draw_player_grid(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                square_color = self.UNSHOT_SQUARE
+                if (self.player_shot[row][col]):
+                    square_color = self.SHOT_SQUARE
+                self.draw_square(col, row, square_color)
+        #     for row in range(self.rows):
+        #         for col in range(self.cols):
+        #             square color
+        #             self.draw_square(col, row, self.GRID_COLOR)
+
+    def draw_AI_grid(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                square_color = self.UNSHOT_SQUARE
+                if (self.ai_shot[row][col]):
+                    square_color = self.SHOT_SQUARE
+                self.draw_square(col, row + self.rows + 1, square_color)
+
+        # def draw_shots(self):
+        #     for row in range(self.rows):
+        #         for col in range(self.cols):
+        #             if (self.shot_positions[row][col] is True):
+        #                 draw_shot(row, col)
 
     def draw_ships(self):
-        # print("self.ships len: ", len(self.ships))
-        for i in range(len(self.ships)):
+        # print("self.ships_player len: ", len(self.ships))
+        for i in range(len(self.ships_player)):
             # print(i)
-            ship_pos: Pos = self.ships[i].get_position()
+            ship_pos: Pos = self.ships_player[i].get_position()
 
-            # print("ship size: ", self.ships[i].get_size())
+            # print("ship size: ", self.ships_player[i].get_size())
             # print("ship x: ", ship_pos.x)
 
-            for j in range(self.ships[i].get_size()):
-                self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y + (j * (not ship_pos.horizontal)), self.SHIP_COLOR)
+            for j in range(self.ships_player[i].get_size()):
+                self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y +
+                                 (j * (not ship_pos.horizontal) + self.rows + 1), self.SHIP_COLOR)
 
     def click_local_grid(self, pos:Pos, offset:Pos = Pos(0, 0)):
     
@@ -117,7 +147,6 @@ class GameBoard:
 
         return None
 
-
     def run(self):
         running = True
         i = 0
@@ -138,7 +167,8 @@ class GameBoard:
             self.screen.fill(self.BACKGROUND_COLOR)
 
             # Draw the grid
-            self.draw_grid(self.screen)
+            self.draw_AI_grid()
+            self.draw_player_grid()
 
             self.draw_ships()
                 
@@ -147,5 +177,5 @@ class GameBoard:
             # print("heart beat ", i)
             # i += 1
 
-            # Update the display
+                # Update the display
             pygame.display.flip()
