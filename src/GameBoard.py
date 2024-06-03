@@ -90,7 +90,7 @@ class GameBoard:
                 square_color = self.UNSHOT_SQUARE
                 if (self.player_shot[row][col]):
                     square_color = self.SHOT_SQUARE
-                self.draw_square(col, row, square_color)
+                self.draw_square(row, col, square_color)
         #     for row in range(self.rows):
         #         for col in range(self.cols):
         #             square color
@@ -102,7 +102,7 @@ class GameBoard:
                 square_color = self.UNSHOT_SQUARE
                 if (self.ai_shot[row][col]):
                     square_color = self.SHOT_SQUARE
-                self.draw_square(col, row + self.rows + 1, square_color)
+                self.draw_square(row, col + self.cols + 1, square_color)
 
         # def draw_shots(self):
         #     for row in range(self.rows):
@@ -124,26 +124,15 @@ class GameBoard:
                                  (j * (not ship_pos.horizontal) + self.rows + 1), self.SHIP_COLOR)
 
     def click_local_grid(self, pos:Pos, offset:Pos = Pos(0, 0)):
-    
-        # for x in range(self.rows):
-        #     for y in range(self.cols):
-
-        #         cell_width = x * (self.RECT_WIDTH + self.MARGIN) + offset.x
-        #         cell_height = y * (self.RECT_HEIGHT + self.MARGIN) + offset.y
-
-        #         rect = pygame.Rect(cell_width, cell_height, self.RECT_WIDTH, self.RECT_HEIGHT)
-
-        #         if rect.collidepoint(event.pos):
-        #             return Pos(x, y)
-                
         cell_width = (self.RECT_WIDTH + self.MARGIN)
         cell_height = (self.RECT_HEIGHT + self.MARGIN)
         
-        # pos = Pos(event.pos[0], event.pos[1])
-        if pos.x > offset.x and pos.x < (offset.x + self.cols * cell_width):
-            if pos.y > offset.y and pos.y < (offset.y + self.rows * cell_height):
-                return Pos((pos.x - offset.x)//cell_width,(pos.y - offset.y)//cell_height)
-        
+        offset = Pos(offset.x * cell_width, offset.y * cell_height)
+        pos = Pos(pos.x - offset.x, pos.y - offset.y)
+
+        if pos.x > 0 and pos.x < (self.cols * cell_width):
+            if pos.y > 0 and pos.y < (self.rows * cell_height):
+                return Pos((pos.x//cell_width),(pos.y//cell_height))
 
         return None
 
@@ -158,10 +147,13 @@ class GameBoard:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     foo = self.click_local_grid(Pos(event.pos[0], event.pos[1]))
                     if foo is not None:
-                        pass
+                        # pass
                         # TODO update board state
-                        # print(foo.x, foo.y)
+                        print("foo: ", foo.x, foo.y)
                         # self.draw_square(foo.x, foo.y, self.BACKGROUND_COLOR)
+                    bar = self.click_local_grid(Pos(event.pos[0], event.pos[1]), Pos(0, self.cols + 1))
+                    if bar is not None:
+                        print("bar: ", bar.x, bar.y)
 
             # Fill the background
             self.screen.fill(self.BACKGROUND_COLOR)
