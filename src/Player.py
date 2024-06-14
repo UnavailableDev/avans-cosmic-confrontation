@@ -6,9 +6,10 @@ from datatypes import Position as Pos
 class Player:
     __HIT_COLOR = (255, 0, 0)
     __SHOT_COLOR = (0, 255, 255)
-    __GRID_COLOR = (255, 255, 255)
-    __SHIP_COLOR = (48, 69, 77)
-    __UNK_SHIP_COLOR = (255, 69, 255)
+    __SHIP_COLOR = (255, 255, 255)
+    __VISIBLE_COLOR = (255, 0, 255)
+    __GRID_COLOR = (48, 69, 77)
+    __UNK_SHIP_COLOR = (128, 69, 128)
 
     rows = 0
     cols = 0
@@ -27,7 +28,7 @@ class Player:
             self.shots.append(inner_array)
 
         self.ships.append(ScoutShip())
-        self.ships[0].set_position(Pos(1, 1, False))
+        self.ships[0].set_position(Pos(2, 2, False))
 
         self.ships.append(BattleShip())
         self.ships[1].set_position(Pos(6, 6))
@@ -41,26 +42,29 @@ class Player:
 
     # TODO This function needs fixing, positions are not reported correctly
     def get_grid_ship(self, pos:Pos):
-        for i in range(len(self.ships)):
+        for i in range(0, len(self.ships)):
             # get size, orientation, and position compare if in range
             size = self.ships[i].get_size()
             ship_pos = self.ships[i].get_position()
-            range_: Pos
+            ship_end: Pos
 
             if ship_pos.horizontal:
-                range_ = Pos(pos.x + size, pos.y)
+                ship_end = Pos(ship_pos.x + size, ship_pos.y)
             else:
-                range_ = Pos(pos.x, pos.y + size)
+                ship_end = Pos(ship_pos.x, ship_pos.y + size)
             
-            if (pos.x <= range_.x and pos.x >= ship_pos.x):
-                if (pos.y <= range_.y and pos.y >= ship_pos.y):
-                    print("xxxxx ", i)
+            print("Ship ", size, ship_pos, ship_end)
+            # if (pos.x <= ship_end.x and pos.x >= ship_pos.x):
+            #     if (pos.y <= ship_end.y and pos.y >= ship_pos.y):
+            if (pos.x >= ship_pos.x and pos.x <= ship_end.x):
+                if (pos.y >= ship_pos.y and pos.y <= ship_end.y):
+                # if (ship_end.y <= pos.y and pos.y >= ship_pos.y):
                     return self.ships[i]
         return None
     
-        for j in range(self.ships_player[i].get_size()):
-            self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y +
-                                (j * (not ship_pos.horizontal) + self.rows + 1), self.SHIP_COLOR)
+        # for j in range(self.ships_player[i].get_size()):
+        #     self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y +
+        #                         (j * (not ship_pos.horizontal) + self.rows + 1), self.SHIP_COLOR)
 
     
     # TODO implement this function
@@ -73,7 +77,8 @@ class Player:
     def get_grid_color(self, pos:Pos, enemy = False):
         color = self.__GRID_COLOR
         if self.get_grid_shot(pos) and enemy:
-            color = self.__SHOT_COLOR
+            print("aa")
+            color = self.__VISIBLE_COLOR
         
             # see if there is a ship
             if self.get_grid_ship(pos):
@@ -82,11 +87,10 @@ class Player:
                 # see if the ship is hit in that position
                 if None:
                     color = self.__HIT_COLOR                
-            print("aa")
         else:
             # see if there is a ship
             if self.get_grid_ship(pos):
-                print("bbbbbbbbbbbb", pos)
+                # print("bbbbbbbbbbbb", pos)
                 color = self.__SHIP_COLOR
         
         return color

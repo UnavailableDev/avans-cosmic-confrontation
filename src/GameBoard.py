@@ -44,27 +44,27 @@ class GameBoard:
         self.player = Player(Pos(rows, cols))
         self.player_ai = Player(Pos(rows, cols))
 
-        self.ships_player: BaseShip = []
+        # self.ships_player: BaseShip = []
 
-        self.ships_player.append(BattleShip())
-        self.ships_player[0].set_position(Pos(1, 1, False))
+        # self.ships_player.append(BattleShip())
+        # self.ships_player[0].set_position(Pos(1, 1, False))
 
-        self.ships_player.append(ScoutShip())
-        self.ships_player[1].set_position(Pos(3, 6))
+        # self.ships_player.append(ScoutShip())
+        # self.ships_player[1].set_position(Pos(3, 6))
 
-        self.player_shot = []
-        for i in range(rows):
-            inner_array = []
-            for j in range(cols):
-                inner_array.append(False)
-            self.player_shot.append(inner_array)
+        # self.player_shot = []
+        # for i in range(rows):
+        #     inner_array = []
+        #     for j in range(cols):
+        #         inner_array.append(False)
+        #     self.player_shot.append(inner_array)
 
-        self.ai_shot = []
-        for i in range(rows):
-            inner_array = []
-            for j in range(cols):
-                inner_array.append(False)
-            self.ai_shot.append(inner_array)
+        # self.ai_shot = []
+        # for i in range(rows):
+        #     inner_array = []
+        #     for j in range(cols):
+        #         inner_array.append(False)
+        #     self.ai_shot.append(inner_array)
         # Set up the display
         # self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         self.screen = screen
@@ -167,6 +167,11 @@ class GameBoard:
             # Draw the grid
             self.draw_AI_grid()
             self.draw_player_grid()
+
+            # print(self.player_ai.ships)
+            # print(self.player.ships)
+
+            print("------------ CYCLE ------------")
 
             # self.draw_ships()
                 
