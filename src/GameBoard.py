@@ -123,21 +123,22 @@ class GameBoard:
                                 if ai_grid_click is not None:
                                     if self.player_ai.shoot_grid(ai_grid_click):
                                         # TODO this is disabled for testing purousses
-                                        pass
-                                        # state = states.MOVE
+                                        # pass
+                                        state = states.MOVE
                             case states.MOVE:
-                                if self.player.get_grid_ship(player_grid_click) is not None:
-                                    pressed_key = self.wait_for_keypress()
-                                    if pressed_key == pygame.K_DOWN:
-                                        self.player.move_ship(player_grid_click, 1, 0)
-                                    if pressed_key == pygame.K_UP:
-                                        self.player.move_ship(player_grid_click, -1, 0)
-                                    if pressed_key == pygame.K_LEFT:
-                                        self.player.move_ship(player_grid_click, 0, -1)
-                                    if pressed_key == pygame.K_RIGHT:
-                                        self.player.move_ship(player_grid_click, 0, 1)
-                        # _____________________________________________________________
-                                state = states.ABILITY
+                                if player_grid_click : 
+                                    if self.player.get_grid_ship(player_grid_click):
+                                        pressed_key = self.wait_for_keypress()
+                                        if pressed_key == pygame.K_DOWN:
+                                            self.player.move_ship(player_grid_click, 1, 0)
+                                        if pressed_key == pygame.K_UP:
+                                            self.player.move_ship(player_grid_click, -1, 0)
+                                        if pressed_key == pygame.K_LEFT:
+                                            self.player.move_ship(player_grid_click, 0, -1)
+                                        if pressed_key == pygame.K_RIGHT:
+                                            self.player.move_ship(player_grid_click, 0, 1)
+                                # _____________________________________________________________
+                                        state = states.ABILITY
                             case states.ABILITY:
 
                                 state = states.ATTACK
