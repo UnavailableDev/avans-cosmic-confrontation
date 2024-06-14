@@ -25,22 +25,22 @@ class Player:
             self.shots.append(inner_array)
 
         self.ships.append(ScoutShip())
-        self.ships.append(ScoutShip())
-        self.ships.append(HunterShip())
-        self.ships.append(HunterShip())
-        self.ships.append(CruiserShip())
-        self.ships.append(CruiserShip())
-        self.ships.append(BattleShip())
-        self.ships.append(CommandShip())
+        # self.ships.append(ScoutShip())
+        # self.ships.append(HunterShip())
+        # self.ships.append(HunterShip())
+        # self.ships.append(CruiserShip())
+        # self.ships.append(CruiserShip())
+        # self.ships.append(BattleShip())
+        # self.ships.append(CommandShip())
 
         # TODO make this dynamic / from the outside
-        self.ships[7].set_position(Pos(0 ,0))
-        self.ships[6].set_position(Pos(0 ,1))
-        self.ships[5].set_position(Pos(0 ,2))
-        self.ships[4].set_position(Pos(0 ,3))
-        self.ships[3].set_position(Pos(0 ,4))
-        self.ships[2].set_position(Pos(0 ,5))
-        self.ships[1].set_position(Pos(0 ,6))
+        # self.ships[7].set_position(Pos(0 ,0))
+        # self.ships[6].set_position(Pos(0 ,1))
+        # self.ships[5].set_position(Pos(0 ,2))
+        # self.ships[4].set_position(Pos(0 ,3))
+        # self.ships[3].set_position(Pos(0 ,4))
+        # self.ships[2].set_position(Pos(0 ,5))
+        # self.ships[1].set_position(Pos(0 ,6))
         self.ships[0].set_position(Pos(0 ,7))
 
 
@@ -131,7 +131,7 @@ class Player:
         if self.ships_colliding() is True:
             potential_moved_ship.set_position(previous_ship_pos)
 
-        return False
+        return True
 
     def get_grid_ship(self, pos: Pos) -> BaseShip:
         for i in range(0, len(self.ships)):

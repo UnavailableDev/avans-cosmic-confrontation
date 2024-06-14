@@ -74,6 +74,30 @@ class GameBoard:
                 square_color = self.player_ai.get_grid_color(Pos(row, col), True)
                 self.draw_square(row, col, square_color)
 
+    def win_condition(self):
+        player_alive: bool = False
+        player_ai_alive: bool = False
+        for ship in self.player.ships:
+            ship: BaseShip = ship
+            if sum(ship.get_hits()) == ship.get_size():
+                pass
+            else:
+                player_alive = True
+        
+        for ship in self.player_ai.ships:
+            ship: BaseShip = ship
+            if sum(ship.get_hits()) == ship.get_size():
+                pass
+            else:
+                player_ai_alive = True
+
+        if not player_alive:
+            return False
+        elif not player_ai_alive:
+            return True
+        else:
+            return None
+
     def click_local_grid(self, pos: Pos, offset: Pos = Pos(0, 0)):
         cell_width = (self.RECT_WIDTH + self.MARGIN)
         cell_height = (self.RECT_HEIGHT + self.MARGIN)
@@ -154,8 +178,9 @@ class GameBoard:
                                 #         if pressed_key == pygame.K_RIGHT:
                                 #             move_ok = self.player.move_ship(player_grid_click, 0, 1)
                                 # # _____________________________________________________________
-                                    if self.input_movement(player_grid_click):
-                                        state = states.ABILITY
+                                    print(self.input_movement(player_grid_click))
+                                    # if self.input_movement(player_grid_click):
+                                    state = states.ABILITY
                             case states.ABILITY:
 
                                 state = states.ATTACK
@@ -178,6 +203,14 @@ class GameBoard:
 
             # print(self.player_ai.ships)
             # print(self.player.ships)
+
+            result = self.win_condition()
+            if result is not None:
+                if result:
+                    print("Player won!")
+                else:
+                    print("AI won!")
+                # TODO Exit game
 
             # print("------------ CYCLE ------------")
 
