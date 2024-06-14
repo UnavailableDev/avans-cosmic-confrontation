@@ -3,6 +3,14 @@ from ships import BaseShip, BattleShip, ScoutShip
 from datatypes import Position as Pos
 from Player import Player
 
+from enum import Enum
+
+class states(Enum):
+    INIT = 0
+    ATTACK = 1
+    MOVE = 2
+    ABILITY = 3
+
 # # Constants
 # SCREEN_WIDTH = 800
 # SCREEN_HEIGHT = 600
@@ -44,27 +52,6 @@ class GameBoard:
         self.player = Player(Pos(rows, cols))
         self.player_ai = Player(Pos(rows, cols))
 
-        # self.ships_player: BaseShip = []
-
-        # self.ships_player.append(BattleShip())
-        # self.ships_player[0].set_position(Pos(1, 1, False))
-
-        # self.ships_player.append(ScoutShip())
-        # self.ships_player[1].set_position(Pos(3, 6))
-
-        # self.player_shot = []
-        # for i in range(rows):
-        #     inner_array = []
-        #     for j in range(cols):
-        #         inner_array.append(False)
-        #     self.player_shot.append(inner_array)
-
-        # self.ai_shot = []
-        # for i in range(rows):
-        #     inner_array = []
-        #     for j in range(cols):
-        #         inner_array.append(False)
-        #     self.ai_shot.append(inner_array)
         # Set up the display
         # self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         self.screen = screen
@@ -75,59 +62,17 @@ class GameBoard:
         y = row * (self.RECT_HEIGHT + self.MARGIN)
         pygame.draw.rect(self.screen, color, (x, y, self.RECT_WIDTH, self.RECT_HEIGHT))
 
-    def draw_shot(self, row, col):
-        # TODO
-        pass
-
-    # def draw_grid(self):
-    #     for row in range(self.rows):
-    #         for col in range(self.cols):
-    #             square color
-    #             self.draw_square(col, row, self.GRID_COLOR)
-    #             # x = col * (self.RECT_WIDTH + self.MARGIN)
-    #             # y = row * (self.RECT_HEIGHT + self.MARGIN)
-    #             # pygame.draw.rect(screen, self.GRID_COLOR, (x, y, self.RECT_WIDTH, self.RECT_HEIGHT))
-
     def draw_player_grid(self):
         for row in range(self.rows):
             for col in range(self.cols):
-                # square_color = self.UNSHOT_SQUARE
                 square_color = self.player.get_grid_color(Pos(row, col))
-                # if (self.player_shot[row][col]):
-                #     square_color = self.SHOT_SQUARE
-                self.draw_square(row, col, square_color)
-        #     for row in range(self.rows):
-        #         for col in range(self.cols):
-        #             square color
-        #             self.draw_square(col, row, self.GRID_COLOR)
+                self.draw_square(row, col + self.cols + 1, square_color)
 
     def draw_AI_grid(self):
         for row in range(self.rows):
             for col in range(self.cols):
-                # square_color = self.UNSHOT_SQUARE
                 square_color = self.player_ai.get_grid_color(Pos(row, col), True)
-                # if (self.ai_shot[row][col]):
-                #     square_color = self.SHOT_SQUARE
-                self.draw_square(row, col + self.cols + 1, square_color)
-
-        # def draw_shots(self):
-        #     for row in range(self.rows):
-        #         for col in range(self.cols):
-        #             if (self.shot_positions[row][col] is True):
-        #                 draw_shot(row, col)
-
-    def draw_ships(self):
-        # print("self.ships_player len: ", len(self.ships))
-        for i in range(len(self.ships_player)):
-            # print(i)
-            ship_pos: Pos = self.ships_player[i].get_position()
-
-            # print("ship size: ", self.ships_player[i].get_size())
-            # print("ship x: ", ship_pos.x)
-
-            for j in range(self.ships_player[i].get_size()):
-                self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y +
-                                 (j * (not ship_pos.horizontal) + self.rows + 1), self.SHIP_COLOR)
+                self.draw_square(row, col, square_color)
 
     def click_local_grid(self, pos: Pos, offset: Pos = Pos(0, 0)):
         cell_width = (self.RECT_WIDTH + self.MARGIN)
@@ -153,35 +98,55 @@ class GameBoard:
 
     def run(self):
         running = True
-        # i = 0
+        # TODO INIT State
+        state: states = states.ABILITY
+        playing_ai = False
 
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    clicked_position = self.click_local_grid(Pos(event.pos[0], event.pos[1]))
-                    if clicked_position is not None:
-                        # _____________ for moving ships # TODO: intergrate with eventual statemachine
-                        if self.player.get_grid_ship(clicked_position) is not None:
-                            pressed_key = self.wait_for_keypress()
-                            if pressed_key == pygame.K_DOWN:
-                                self.player.move_ship(clicked_position, 1, 0)
-                            if pressed_key == pygame.K_UP:
-                                self.player.move_ship(clicked_position, -1, 0)
-                            if pressed_key == pygame.K_LEFT:
-                                self.player.move_ship(clicked_position, 0, -1)
-                            if pressed_key == pygame.K_RIGHT:
-                                self.player.move_ship(clicked_position, 0, 1)
-                        # _____________________________________________________________
-                            # pass
-                            # TODO update board state
-                        # print("foo: ", clicked_position.x, clicked_position.y)
-                        # self.draw_square(foo.x, foo.y, self.BACKGROUND_COLOR)
-                    bar = self.click_local_grid(Pos(event.pos[0], event.pos[1]), Pos(0, self.cols + 1))
-                    if bar is not None:
-                        # print("bar: ", bar.x, bar.y)
-                        pass
+                    ai_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]))
+                    player_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]), Pos(0, self.cols + 1))
+                    
+                    print(state)
+
+                    if playing_ai:
+                        # call AI logic
+                        
+
+                        playing_ai = False
+
+                    else:
+                        match state:
+                            case states.ATTACK:
+                                if ai_grid_click is not None:
+                                    if self.player_ai.shoot_grid(ai_grid_click):
+                                        # TODO this is disabled for testing purousses
+                                        # pass
+                                        state = states.MOVE
+                            case states.MOVE:
+                                if player_grid_click : 
+                                # _____________ for moving ships # TODO: intergrate with eventual statemachine
+                                    if self.player.get_grid_ship(player_grid_click):
+                                        pressed_key = self.wait_for_keypress()
+                                        if pressed_key == pygame.K_DOWN:
+                                            self.player.move_ship(player_grid_click, 1, 0)
+                                        if pressed_key == pygame.K_UP:
+                                            self.player.move_ship(player_grid_click, -1, 0)
+                                        if pressed_key == pygame.K_LEFT:
+                                            self.player.move_ship(player_grid_click, 0, -1)
+                                        if pressed_key == pygame.K_RIGHT:
+                                            self.player.move_ship(player_grid_click, 0, 1)
+                                # _____________________________________________________________
+                                        state = states.ABILITY
+                            case states.ABILITY:
+
+                                state = states.ATTACK
+                                playing_ai = True
+                            case _: # error / default case
+                                pass
 
             # Fill the background
             self.screen.fill(self.BACKGROUND_COLOR)
@@ -194,13 +159,6 @@ class GameBoard:
             # print(self.player.ships)
 
             # print("------------ CYCLE ------------")
-
-            # self.draw_ships()
-
-            # self.draw_shots()
-
-            # print("heart beat ", i)
-            # i += 1
 
             # Update the display
             pygame.display.flip()
