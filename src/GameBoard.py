@@ -6,6 +6,7 @@ from Player import Player
 from enum import Enum
 
 class states(Enum):
+    INIT = 0
     ATTACK = 1
     MOVE = 2
     ABILITY = 3
@@ -97,7 +98,7 @@ class GameBoard:
 
     def run(self):
         running = True
-        # i = 0
+        # TODO INIT State
         state: states = states.ABILITY
         playing_ai = False
 
@@ -131,7 +132,6 @@ class GameBoard:
                                     if self.player.get_grid_ship(player_grid_click):
                                         pressed_key = self.wait_for_keypress()
                                         if pressed_key == pygame.K_DOWN:
-                                            print("llllllllll")
                                             self.player.move_ship(player_grid_click, 1, 0)
                                         if pressed_key == pygame.K_UP:
                                             self.player.move_ship(player_grid_click, -1, 0)

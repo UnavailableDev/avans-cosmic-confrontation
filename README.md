@@ -59,7 +59,9 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 - [ ] Dynamic board size between 8-16 (always a square shape)
 - [ ] Make abilities
 - [ ] Make AI
+- [ ] Init state where the player (and AI) place their ships on the grid
 
 
 ## Feature request:
 - [ ] reduce windows size, or dynamically change it correctly
+- [ ] Show ship head/tail for recognition
