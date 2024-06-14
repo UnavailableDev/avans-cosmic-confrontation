@@ -129,37 +129,51 @@ class GameBoard:
                 self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y +
                                  (j * (not ship_pos.horizontal) + self.rows + 1), self.SHIP_COLOR)
 
-    def click_local_grid(self, pos:Pos, offset:Pos = Pos(0, 0)):
+    def click_local_grid(self, pos: Pos, offset: Pos = Pos(0, 0)):
         cell_width = (self.RECT_WIDTH + self.MARGIN)
         cell_height = (self.RECT_HEIGHT + self.MARGIN)
-        
+
         offset = Pos(offset.x * cell_width, offset.y * cell_height)
         pos = Pos(pos.x - offset.x, pos.y - offset.y)
 
         if pos.x > 0 and pos.x < (self.cols * cell_width):
             if pos.y > 0 and pos.y < (self.rows * cell_height):
-                return Pos((pos.x//cell_width),(pos.y//cell_height))
+                return Pos((pos.x//cell_width), (pos.y//cell_height))
 
         return None
 
+    def wait_for_keypress(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                elif event.type == pygame.KEYDOWN:
+                    print(f"Key {pygame.key.name(event.key)} was pressed")
+                    return event.key  # Return the key that was pressed
+
     def run(self):
         running = True
-        i = 0
+        # i = 0
 
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    foo = self.click_local_grid(Pos(event.pos[0], event.pos[1]))
-                    if foo is not None:
-                        # pass
-                        # TODO update board state
-                        print("foo: ", foo.x, foo.y)
+                    clicked_position = self.click_local_grid(Pos(event.pos[0], event.pos[1]))
+                    if clicked_position is not None:
+                        if self.player.get_grid_ship(clicked_position) is not None:
+                            pressed_key = self.wait_for_keypress()
+                            pass
+
+                            # pass
+                            # TODO update board state
+                        # print("foo: ", clicked_position.x, clicked_position.y)
                         # self.draw_square(foo.x, foo.y, self.BACKGROUND_COLOR)
                     bar = self.click_local_grid(Pos(event.pos[0], event.pos[1]), Pos(0, self.cols + 1))
                     if bar is not None:
-                        print("bar: ", bar.x, bar.y)
+                        # print("bar: ", bar.x, bar.y)
+                        pass
 
             # Fill the background
             self.screen.fill(self.BACKGROUND_COLOR)
@@ -169,11 +183,11 @@ class GameBoard:
             self.draw_player_grid()
 
             # self.draw_ships()
-                
+
             # self.draw_shots()
 
             # print("heart beat ", i)
             # i += 1
 
-                # Update the display
+            # Update the display
             pygame.display.flip()
