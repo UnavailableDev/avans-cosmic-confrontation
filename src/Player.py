@@ -1,4 +1,4 @@
-from ships import BaseShip, BattleShip, ScoutShip
+from ships import *
 from datatypes import Position as Pos
 
 
@@ -25,11 +25,24 @@ class Player:
             self.shots.append(inner_array)
 
         self.ships.append(ScoutShip())
+        self.ships.append(ScoutShip())
+        self.ships.append(HunterShip())
+        self.ships.append(HunterShip())
+        self.ships.append(CruiserShip())
+        self.ships.append(CruiserShip())
         self.ships.append(BattleShip())
+        self.ships.append(CommandShip())
 
         # TODO make this dynamic / from the outside
-        self.ships[0].set_position(Pos(2, 2, False))
-        self.ships[1].set_position(Pos(4, 6))
+        self.ships[7].set_position(Pos(0 ,0))
+        self.ships[6].set_position(Pos(0 ,1))
+        self.ships[5].set_position(Pos(0 ,2))
+        self.ships[4].set_position(Pos(0 ,3))
+        self.ships[3].set_position(Pos(0 ,4))
+        self.ships[2].set_position(Pos(0 ,5))
+        self.ships[1].set_position(Pos(0 ,6))
+        self.ships[0].set_position(Pos(0 ,7))
+
 
     def shoot_ships(self, pos:Pos):
         ship: BaseShip = self.get_grid_ship(pos)
