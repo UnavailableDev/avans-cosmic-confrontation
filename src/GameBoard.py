@@ -148,7 +148,7 @@ class GameBoard:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                 elif event.type == pygame.KEYDOWN:
-                    print(f"Key {pygame.key.name(event.key)} was pressed")
+                    # print(f"Key {pygame.key.name(event.key)} was pressed")
                     return event.key  # Return the key that was pressed
 
     def run(self):
@@ -162,10 +162,18 @@ class GameBoard:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     clicked_position = self.click_local_grid(Pos(event.pos[0], event.pos[1]))
                     if clicked_position is not None:
+                        # _____________ for moving ships # TODO: intergrate with eventual statemachine
                         if self.player.get_grid_ship(clicked_position) is not None:
                             pressed_key = self.wait_for_keypress()
-                            pass
-
+                            if pressed_key == pygame.K_DOWN:
+                                self.player.move_ship(clicked_position, 1, 0)
+                            if pressed_key == pygame.K_UP:
+                                self.player.move_ship(clicked_position, -1, 0)
+                            if pressed_key == pygame.K_LEFT:
+                                self.player.move_ship(clicked_position, 0, -1)
+                            if pressed_key == pygame.K_RIGHT:
+                                self.player.move_ship(clicked_position, 0, 1)
+                        # _____________________________________________________________
                             # pass
                             # TODO update board state
                         # print("foo: ", clicked_position.x, clicked_position.y)
@@ -185,7 +193,7 @@ class GameBoard:
             # print(self.player_ai.ships)
             # print(self.player.ships)
 
-            print("------------ CYCLE ------------")
+            # print("------------ CYCLE ------------")
 
             # self.draw_ships()
 
