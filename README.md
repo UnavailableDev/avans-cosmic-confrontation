@@ -53,7 +53,11 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 - [ ] Validate ship movements @Seger
 - [ ] Save/Load JSON @Seger
 - [ ] Custom nicknames @Seger
-- [ ] Shoot position @Joshua
+- [x] Shoot position @Joshua
 - [ ] State machine which turn @Joshua
 - [ ] win/loss condition
 - [ ] Make abilities
+
+
+## Feature request:
+- [ ] reduce windows size, or dynamically change it correctly
