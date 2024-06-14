@@ -1,6 +1,7 @@
 import pygame
 from ships import BaseShip, BattleShip, ScoutShip
 from datatypes import Position as Pos
+from Player import Player
 
 # # Constants
 # SCREEN_WIDTH = 800
@@ -39,6 +40,9 @@ class GameBoard:
         self.MARGIN = 5  # Space between rectangles
         self.cols = cols
         self.rows = rows
+
+        self.player = Player(Pos(rows, cols))
+        self.player_ai = Player(Pos(rows, cols))
 
         self.ships_player: BaseShip = []
 
@@ -87,9 +91,10 @@ class GameBoard:
     def draw_player_grid(self):
         for row in range(self.rows):
             for col in range(self.cols):
-                square_color = self.UNSHOT_SQUARE
-                if (self.player_shot[row][col]):
-                    square_color = self.SHOT_SQUARE
+                # square_color = self.UNSHOT_SQUARE
+                square_color = self.player.get_grid_color(Pos(row, col))
+                # if (self.player_shot[row][col]):
+                #     square_color = self.SHOT_SQUARE
                 self.draw_square(row, col, square_color)
         #     for row in range(self.rows):
         #         for col in range(self.cols):
@@ -99,9 +104,10 @@ class GameBoard:
     def draw_AI_grid(self):
         for row in range(self.rows):
             for col in range(self.cols):
-                square_color = self.UNSHOT_SQUARE
-                if (self.ai_shot[row][col]):
-                    square_color = self.SHOT_SQUARE
+                # square_color = self.UNSHOT_SQUARE
+                square_color = self.player_ai.get_grid_color(Pos(row, col), True)
+                # if (self.ai_shot[row][col]):
+                #     square_color = self.SHOT_SQUARE
                 self.draw_square(row, col + self.cols + 1, square_color)
 
         # def draw_shots(self):
@@ -162,7 +168,7 @@ class GameBoard:
             self.draw_AI_grid()
             self.draw_player_grid()
 
-            self.draw_ships()
+            # self.draw_ships()
                 
             # self.draw_shots()
 

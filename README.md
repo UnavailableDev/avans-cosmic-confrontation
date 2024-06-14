@@ -14,13 +14,13 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 	- nickname
 - Functional tasks
 	- [ ] Render grid status
-	- [ ] Render ships
+	- [x] Render ships
 	- [ ] Save game state to file
 	- [ ] Load game state from file
 	- [ ] Move ship
 	- [ ] Shoot Grid position
 		- [ ] Check if ship is on position
-	- [ ] Menu
+	- [x] Menu
 	- [ ] Abilities:
 		- [ ] 
 - GUI
@@ -30,7 +30,7 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 		- [ ] Previous games
 		- [ ] Nickname config
 	- In game
-		- [ ] Grid
+		- [x] Grid
 		- [ ] Abilities
 		- [ ] End turn
 		- [ ] Quit
@@ -39,11 +39,19 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 # TODO:
 ## sprint 1
 - [ ] Pygame @Seger
-	- [ ] grid (GameBoard class)
-	- [ ] menu
+	- [x] grid (GameBoard class)
+	- [x] menu
 - [ ] Base class Ship @Joshua
-	- [ ] Implemented without abilities
+	- [x] Implemented without abilities
 
 
 ## sprint 2
-- [ ] Render ships
+- [x] Render ships
+
+## sprint 3
+- [ ] Validate ship movements
+- [ ] Save/Load JSON
+- [ ] Custom nicknames
+- [ ] Shoot position
+- [ ] State machine which turn
+
