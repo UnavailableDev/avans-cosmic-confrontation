@@ -49,9 +49,11 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 - [x] Render ships
 
 ## sprint 3
-- [ ] Validate ship movements
-- [ ] Save/Load JSON
-- [ ] Custom nicknames
-- [ ] Shoot position
-- [ ] State machine which turn
-
+- [ ] Bug fix: ship rendering @Joshua
+- [ ] Validate ship movements @Seger
+- [ ] Save/Load JSON @Seger
+- [ ] Custom nicknames @Seger
+- [ ] Shoot position @Joshua
+- [ ] State machine which turn @Joshua
+- [ ] win/loss condition
+- [ ] Make abilities
