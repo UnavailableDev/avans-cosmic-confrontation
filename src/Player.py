@@ -68,7 +68,7 @@ class Player:
             temp_array.append(inner_array)
 
         for i in range(len(self.ships)):
-            for j in range(self.ships[i].get_size() + 1):
+            for j in range(self.ships[i].get_size()):
                 ship_pos = self.ships[i].get_position()
                 if temp_array[ship_pos.y + (j * (not ship_pos.horizontal))][ship_pos.x +
                                                                             (j * (ship_pos.horizontal))] is True:
