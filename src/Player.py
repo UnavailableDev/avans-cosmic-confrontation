@@ -53,25 +53,6 @@ class Player:
         # Invalid, position was already hit
         return False
 
-    # TODO This function needs fixing, positions are not reported correctly
-    def get_grid_ship(self, pos: Pos) -> BaseShip:
-        for i in range(0, len(self.ships)):
-            # get size, orientation, and position compare if in range
-            size = self.ships[i].get_size()
-            ship_pos = self.ships[i].get_position()
-            ship_end: Pos
-
-            if ship_pos.horizontal:
-                ship_end = Pos(ship_pos.x + size-1, ship_pos.y)
-            else:
-                ship_end = Pos(ship_pos.x, ship_pos.y + size-1)
-            
-            # print("Ship ", size, ship_pos, ship_end)
-
-            if (ship_pos.x <= pos.x and pos.x <= ship_end.x):
-                if (ship_pos.y <= pos.y and pos.y <= ship_end.y):
-                    return self.ships[i]
-        return None
 
     def ships_colliding(self) -> bool:
         temp_array: bool = []
@@ -109,6 +90,7 @@ class Player:
             #
         return False
 
+    # TODO add True return if movement got accepted
     def move_ship(self, pos: Pos, vertical: int, horizontal: int) -> bool:
         potential_moved_ship = self.get_grid_ship(pos)
         ship_pos = potential_moved_ship.get_position()
@@ -138,13 +120,24 @@ class Player:
 
         return False
 
-    # for j in range(self.ships_player[i].get_size()):
-    #     self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y +
-    #                         (j * (not ship_pos.horizontal) + self.rows + 1), self.SHIP_COLOR)
+    def get_grid_ship(self, pos: Pos) -> BaseShip:
+        for i in range(0, len(self.ships)):
+            # get size, orientation, and position compare if in range
+            size = self.ships[i].get_size()
+            ship_pos = self.ships[i].get_position()
+            ship_end: Pos
 
-    # TODO implement this function
-    # def get_ship_hit(self, ship: BaseShip, pos:Pos):
-    #     pass
+            if ship_pos.horizontal:
+                ship_end = Pos(ship_pos.x + size-1, ship_pos.y)
+            else:
+                ship_end = Pos(ship_pos.x, ship_pos.y + size-1)
+            
+            # print("Ship ", size, ship_pos, ship_end)
+
+            if (ship_pos.x <= pos.x and pos.x <= ship_end.x):
+                if (ship_pos.y <= pos.y and pos.y <= ship_end.y):
+                    return self.ships[i]
+        return None
 
     def get_grid_shot(self, pos: Pos):
         return self.shots[pos.x][pos.y]

@@ -99,7 +99,7 @@ class GameBoard:
     def run(self):
         running = True
         # TODO INIT State
-        state: states = states.ABILITY
+        state: states = states.INIT
         playing_ai = False
 
         while running:
@@ -112,14 +112,12 @@ class GameBoard:
                     
                     print(state)
 
-                    if playing_ai:
-                        # call AI logic
-                        
-
-                        playing_ai = False
-
-                    else:
+                    if not playing_ai:
                         match state:
+                            case states.INIT:
+                                if not ai_grid_click and player_grid_click:
+                                    # Start game
+                                    state = states.ATTACK
                             case states.ATTACK:
                                 if ai_grid_click is not None:
                                     if self.player_ai.shoot_grid(ai_grid_click):
@@ -131,15 +129,18 @@ class GameBoard:
                                 # _____________ for moving ships # TODO: intergrate with eventual statemachine
                                     if self.player.get_grid_ship(player_grid_click):
                                         pressed_key = self.wait_for_keypress()
+                                        move_ok = False
                                         if pressed_key == pygame.K_DOWN:
-                                            self.player.move_ship(player_grid_click, 1, 0)
+                                            move_ok = self.player.move_ship(player_grid_click, 1, 0)
                                         if pressed_key == pygame.K_UP:
-                                            self.player.move_ship(player_grid_click, -1, 0)
+                                            move_ok = self.player.move_ship(player_grid_click, -1, 0)
                                         if pressed_key == pygame.K_LEFT:
-                                            self.player.move_ship(player_grid_click, 0, -1)
+                                            move_ok = self.player.move_ship(player_grid_click, 0, -1)
                                         if pressed_key == pygame.K_RIGHT:
-                                            self.player.move_ship(player_grid_click, 0, 1)
+                                            move_ok = self.player.move_ship(player_grid_click, 0, 1)
                                 # _____________________________________________________________
+                                        if move_ok:
+                                            pass
                                         state = states.ABILITY
                             case states.ABILITY:
 
@@ -147,6 +148,12 @@ class GameBoard:
                                 playing_ai = True
                             case _: # error / default case
                                 pass
+
+            # call AI logic
+            if playing_ai:
+                
+
+                playing_ai = False
 
             # Fill the background
             self.screen.fill(self.BACKGROUND_COLOR)
