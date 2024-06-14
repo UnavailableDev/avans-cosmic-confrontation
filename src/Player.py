@@ -36,7 +36,6 @@ class Player:
     def shoot_ships(self, pos:Pos):
         ship: BaseShip = self.get_grid_ship(pos)
         if ship:
-            print(ship.get_size())
             index: int
             if ship.get_position().horizontal:
                 index = pos.x - ship.get_position().x
