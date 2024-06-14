@@ -49,7 +49,7 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 - [x] Render ships
 
 ## sprint 3
-- [ ] Bug fix: ship rendering @Joshua
+- [x] Bug fix: ship rendering @Joshua
 - [ ] Validate ship movements @Seger
 - [ ] Save/Load JSON @Seger
 - [ ] Custom nicknames @Seger

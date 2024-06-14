@@ -15,7 +15,6 @@ class Player:
     cols = 0
     
 
-
     def __init__(self, size:Pos) -> None:
         self.ships: BaseShip = []
         self.shots: bool = []
@@ -28,9 +27,10 @@ class Player:
             self.shots.append(inner_array)
 
         self.ships.append(ScoutShip())
-        self.ships[0].set_position(Pos(2, 2, False))
-
         self.ships.append(BattleShip())
+
+        # TODO make this dynamic / from the outside
+        self.ships[0].set_position(Pos(2, 2, False))
         self.ships[1].set_position(Pos(6, 6))
 
     def shoot_grid(self, pos:Pos):
@@ -53,20 +53,14 @@ class Player:
             else:
                 ship_end = Pos(ship_pos.x, ship_pos.y + size)
             
-            print("Ship ", size, ship_pos, ship_end)
-            # if (pos.x <= ship_end.x and pos.x >= ship_pos.x):
-            #     if (pos.y <= ship_end.y and pos.y >= ship_pos.y):
-            if (pos.x >= ship_pos.x and pos.x <= ship_end.x):
-                if (pos.y >= ship_pos.y and pos.y <= ship_end.y):
-                # if (ship_end.y <= pos.y and pos.y >= ship_pos.y):
+            # print("Ship ", size, ship_pos, ship_end)
+
+            if (ship_pos.x <= pos.x and pos.x <= ship_end.x):
+                if (ship_pos.y <= pos.y and pos.y <= ship_end.y):
                     return self.ships[i]
         return None
-    
-        # for j in range(self.ships_player[i].get_size()):
-        #     self.draw_square(ship_pos.x + (j * ship_pos.horizontal), ship_pos.y +
-        #                         (j * (not ship_pos.horizontal) + self.rows + 1), self.SHIP_COLOR)
 
-    
+
     # TODO implement this function
     # def get_ship_hit(self, ship: BaseShip, pos:Pos):
     #     pass
@@ -76,21 +70,20 @@ class Player:
 
     def get_grid_color(self, pos:Pos, enemy = False):
         color = self.__GRID_COLOR
-        if self.get_grid_shot(pos) and enemy:
-            print("aa")
-            color = self.__VISIBLE_COLOR
-        
-            # see if there is a ship
-            if self.get_grid_ship(pos):
-                color = self.__UNK_SHIP_COLOR
+        if enemy:
+            if self.get_grid_shot(pos):
+                color = self.__VISIBLE_COLOR
+            
+                # see if there is a ship
+                if self.get_grid_ship(pos):
+                    color = self.__UNK_SHIP_COLOR
 
-                # see if the ship is hit in that position
-                if None:
-                    color = self.__HIT_COLOR                
+                    # see if the ship is hit in that position
+                    if None:
+                        color = self.__HIT_COLOR                
         else:
             # see if there is a ship
             if self.get_grid_ship(pos):
-                # print("bbbbbbbbbbbb", pos)
                 color = self.__SHIP_COLOR
         
         return color
