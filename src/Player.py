@@ -13,11 +13,11 @@ class Player:
     rows = 0
     cols = 0
 
-    def __init__(self, size: Pos) -> None:
+    def __init__(self, rows, cols) -> None:
         self.ships: BaseShip = []
         self.shots: bool = []
-        self.rows = size.x
-        self.cols = size.y
+        self.rows = rows
+        self.cols = cols
         for i in range(self.rows):
             inner_array = []
             for j in range(self.cols):
@@ -101,7 +101,7 @@ class Player:
             #
             #         elif self.ships[i].get_position().horizontal is False:
             #
-        return False
+        return True
 
     # TODO add True return if movement got accepted
     def move_ship(self, pos: Pos, vertical: int, horizontal: int) -> bool:

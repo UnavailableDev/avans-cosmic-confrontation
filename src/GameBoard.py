@@ -49,8 +49,8 @@ class GameBoard:
         self.cols = cols
         self.rows = rows
 
-        self.player = Player(Pos(rows, cols))
-        self.player_ai = Player(Pos(rows, cols))
+        self.player = Player(rows, cols)
+        self.player_ai = Player(rows, cols)
 
         # Set up the display
         # self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
@@ -88,18 +88,17 @@ class GameBoard:
         return None
     
     def input_movement(self, player_grid_click: Pos):
-        move_ok = False
         if self.player.get_grid_ship(player_grid_click):
             pressed_key = self.wait_for_keypress()
             if pressed_key == pygame.K_DOWN:
-                move_ok = self.player.move_ship(player_grid_click, 1, 0)
+                return self.player.move_ship(player_grid_click, 1, 0)
             if pressed_key == pygame.K_UP:
-                move_ok = self.player.move_ship(player_grid_click, -1, 0)
+                return self.player.move_ship(player_grid_click, -1, 0)
             if pressed_key == pygame.K_LEFT:
-                move_ok = self.player.move_ship(player_grid_click, 0, -1)
+                return self.player.move_ship(player_grid_click, 0, -1)
             if pressed_key == pygame.K_RIGHT:
-                move_ok = self.player.move_ship(player_grid_click, 0, 1)
-        return move_ok
+                return self.player.move_ship(player_grid_click, 0, 1)
+        return False
 
     def wait_for_keypress(self):
         while True:
