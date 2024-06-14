@@ -92,11 +92,11 @@ class GameBoard:
                     if ai_grid_click is not None:
                         # pass
                         # TODO update board state
-                        print("foo: ", ai_grid_click.x, ai_grid_click.y)
-                        # self.draw_square(foo.x, foo.y, self.BACKGROUND_COLOR)
+                        accepted_grid = self.player_ai.shoot_grid(ai_grid_click)
                     player_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]), Pos(0, self.cols + 1))
                     if player_grid_click is not None:
-                        print("bar: ", player_grid_click.x, player_grid_click.y)
+                        # print("bar: ", player_grid_click.x, player_grid_click.y)
+                        pass
 
             # Fill the background
             self.screen.fill(self.BACKGROUND_COLOR)
@@ -108,7 +108,7 @@ class GameBoard:
             # print(self.player_ai.ships)
             # print(self.player.ships)
 
-            print("------------ CYCLE ------------")
+            # print("------------ CYCLE ------------")
 
             # Update the display
             pygame.display.flip()
