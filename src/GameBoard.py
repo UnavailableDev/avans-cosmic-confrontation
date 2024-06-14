@@ -86,6 +86,20 @@ class GameBoard:
                 return Pos((pos.x//cell_width), (pos.y//cell_height))
 
         return None
+    
+    def input_movement(self, player_grid_click: Pos):
+        move_ok = False
+        if self.player.get_grid_ship(player_grid_click):
+            pressed_key = self.wait_for_keypress()
+            if pressed_key == pygame.K_DOWN:
+                move_ok = self.player.move_ship(player_grid_click, 1, 0)
+            if pressed_key == pygame.K_UP:
+                move_ok = self.player.move_ship(player_grid_click, -1, 0)
+            if pressed_key == pygame.K_LEFT:
+                move_ok = self.player.move_ship(player_grid_click, 0, -1)
+            if pressed_key == pygame.K_RIGHT:
+                move_ok = self.player.move_ship(player_grid_click, 0, 1)
+        return move_ok
 
     def wait_for_keypress(self):
         while True:
@@ -115,8 +129,10 @@ class GameBoard:
                     if not playing_ai:
                         match state:
                             case states.INIT:
-                                if not ai_grid_click and player_grid_click:
-                                    # Start game
+                                if player_grid_click: 
+                                    self.input_movement(player_grid_click)
+                                
+                                if ai_grid_click: # Start game
                                     state = states.ATTACK
                             case states.ATTACK:
                                 if ai_grid_click is not None:
@@ -126,21 +142,20 @@ class GameBoard:
                                         state = states.MOVE
                             case states.MOVE:
                                 if player_grid_click : 
-                                # _____________ for moving ships # TODO: intergrate with eventual statemachine
-                                    if self.player.get_grid_ship(player_grid_click):
-                                        pressed_key = self.wait_for_keypress()
-                                        move_ok = False
-                                        if pressed_key == pygame.K_DOWN:
-                                            move_ok = self.player.move_ship(player_grid_click, 1, 0)
-                                        if pressed_key == pygame.K_UP:
-                                            move_ok = self.player.move_ship(player_grid_click, -1, 0)
-                                        if pressed_key == pygame.K_LEFT:
-                                            move_ok = self.player.move_ship(player_grid_click, 0, -1)
-                                        if pressed_key == pygame.K_RIGHT:
-                                            move_ok = self.player.move_ship(player_grid_click, 0, 1)
-                                # _____________________________________________________________
-                                        if move_ok:
-                                            pass
+                                # # _____________ for moving ships # TODO: intergrate with eventual statemachine
+                                #     if self.player.get_grid_ship(player_grid_click):
+                                #         pressed_key = self.wait_for_keypress()
+                                #         move_ok = False
+                                #         if pressed_key == pygame.K_DOWN:
+                                #             move_ok = self.player.move_ship(player_grid_click, 1, 0)
+                                #         if pressed_key == pygame.K_UP:
+                                #             move_ok = self.player.move_ship(player_grid_click, -1, 0)
+                                #         if pressed_key == pygame.K_LEFT:
+                                #             move_ok = self.player.move_ship(player_grid_click, 0, -1)
+                                #         if pressed_key == pygame.K_RIGHT:
+                                #             move_ok = self.player.move_ship(player_grid_click, 0, 1)
+                                # # _____________________________________________________________
+                                    if self.input_movement(player_grid_click):
                                         state = states.ABILITY
                             case states.ABILITY:
 
