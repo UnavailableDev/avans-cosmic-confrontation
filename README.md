@@ -49,11 +49,17 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 - [x] Render ships
 
 ## sprint 3
-- [ ] Bug fix: ship rendering @Joshua
+- [x] Bug fix: ship rendering @Joshua
 - [ ] Validate ship movements @Seger
 - [ ] Save/Load JSON @Seger
 - [ ] Custom nicknames @Seger
-- [ ] Shoot position @Joshua
-- [ ] State machine which turn @Joshua
+- [x] Shoot position @Joshua
+- [x] State machine which turn @Joshua
 - [ ] win/loss condition
+- [ ] Dynamic board size between 8-16 (always a square shape)
 - [ ] Make abilities
+- [ ] Make AI
+
+
+## Feature request:
+- [ ] reduce windows size, or dynamically change it correctly
