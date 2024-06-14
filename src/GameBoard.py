@@ -3,6 +3,13 @@ from ships import BaseShip, BattleShip, ScoutShip
 from datatypes import Position as Pos
 from Player import Player
 
+from enum import Enum
+
+class states(Enum):
+    ATTACK = 1
+    MOVE = 2
+    ABILITY = 3
+
 # # Constants
 # SCREEN_WIDTH = 800
 # SCREEN_HEIGHT = 600
@@ -82,6 +89,8 @@ class GameBoard:
     def run(self):
         running = True
         i = 0
+        state: states = states.ABILITY
+        playing_ai = False
 
         while running:
             for event in pygame.event.get():
@@ -89,14 +98,33 @@ class GameBoard:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     ai_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]))
-                    if ai_grid_click is not None:
-                        # pass
-                        # TODO update board state
-                        accepted_grid = self.player_ai.shoot_grid(ai_grid_click)
                     player_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]), Pos(0, self.cols + 1))
-                    if player_grid_click is not None:
-                        # print("bar: ", player_grid_click.x, player_grid_click.y)
-                        pass
+                    
+                    print(state)
+
+                    if playing_ai:
+                        # call AI logic
+                        
+
+                        playing_ai = False
+
+                    else:
+                        match state:
+                            case states.ATTACK:
+                                if ai_grid_click is not None:
+                                    if self.player_ai.shoot_grid(ai_grid_click):
+                                        # TODO this is disabled for testing purousses
+                                        pass
+                                        # state = states.MOVE
+                            case states.MOVE:
+
+                                state = states.ABILITY
+                            case states.ABILITY:
+
+                                state = states.ATTACK
+                                playing_ai = True
+                            case _: # error / default case
+                                pass
 
             # Fill the background
             self.screen.fill(self.BACKGROUND_COLOR)

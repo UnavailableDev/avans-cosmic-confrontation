@@ -54,9 +54,11 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 - [ ] Save/Load JSON @Seger
 - [ ] Custom nicknames @Seger
 - [x] Shoot position @Joshua
-- [ ] State machine which turn @Joshua
+- [x] State machine which turn @Joshua
 - [ ] win/loss condition
+- [ ] Dynamic board size between 8-16 (always a square shape)
 - [ ] Make abilities
+- [ ] Make AI
 
 
 ## Feature request:
