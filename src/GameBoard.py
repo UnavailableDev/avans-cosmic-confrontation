@@ -127,9 +127,11 @@ class GameBoard:
                                         state = states.MOVE
                             case states.MOVE:
                                 if player_grid_click : 
+                                # _____________ for moving ships # TODO: intergrate with eventual statemachine
                                     if self.player.get_grid_ship(player_grid_click):
                                         pressed_key = self.wait_for_keypress()
                                         if pressed_key == pygame.K_DOWN:
+                                            print("llllllllll")
                                             self.player.move_ship(player_grid_click, 1, 0)
                                         if pressed_key == pygame.K_UP:
                                             self.player.move_ship(player_grid_click, -1, 0)
