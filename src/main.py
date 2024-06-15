@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-from ships import BaseShip
+# from ships import BaseShip
 from GameBoard import GameBoard
 from Menu import Menu
 
@@ -16,6 +16,7 @@ game_board = GameBoard(screen, 10, 10)
 
 def game_start():
     print("Start Game!")
+    game_board.player.set_nickname(menu.text_input)
     game_board.run()
 
 

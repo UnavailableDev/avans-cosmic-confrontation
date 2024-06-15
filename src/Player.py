@@ -14,6 +14,8 @@ class Player:
     cols = 0
 
     def __init__(self, size: Pos) -> None:
+        self.nickname = "undefined nickname"
+
         self.ships: BaseShip = []
         self.shots: bool = []
         self.rows = size.x
@@ -31,7 +33,7 @@ class Player:
         self.ships[0].set_position(Pos(2, 2, False))
         self.ships[1].set_position(Pos(4, 6))
 
-    def shoot_ships(self, pos:Pos):
+    def shoot_ships(self, pos: Pos):
         ship: BaseShip = self.get_grid_ship(pos)
         if ship:
             index: int
@@ -49,7 +51,7 @@ class Player:
             self.shots[pos.x][pos.y] = True
             self.shoot_ships(pos)
             return True
-        
+
         # Invalid, position was already hit
         return False
 
@@ -65,7 +67,7 @@ class Player:
                 ship_end = Pos(ship_pos.x + size-1, ship_pos.y)
             else:
                 ship_end = Pos(ship_pos.x, ship_pos.y + size-1)
-            
+
             # print("Ship ", size, ship_pos, ship_end)
 
             if (ship_pos.x <= pos.x and pos.x <= ship_end.x):
@@ -154,17 +156,24 @@ class Player:
         if enemy:
             if self.get_grid_shot(pos):
                 color = self.__VISIBLE_COLOR
-            
+
                 # see if there is a ship
                 if self.get_grid_ship(pos):
                     color = self.__UNK_SHIP_COLOR
 
                     # see if the ship is hit in that position
                     if None:
-                        color = self.__HIT_COLOR                
+                        color = self.__HIT_COLOR
         else:
             # see if there is a ship
             if self.get_grid_ship(pos):
                 color = self.__SHIP_COLOR
 
         return color
+
+    def set_nickname(self, new_nickname: str) -> None:
+        self.nickname = new_nickname
+        return
+
+    def get_nickname(self) -> str:
+        return self.nickname
