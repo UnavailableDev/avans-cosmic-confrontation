@@ -115,18 +115,37 @@ class Visitor:
         return True
 
     def do_ability_cuiser(self, ship: CruiserShip, actor: Player, subject: Player, pos: Pos):
+        ship = subject.get_grid_ship()
+        if ship is None:
+            return False
 
-        print("Cruise")
+        ship.set_cooldown(3)
+
+        print("EMP")
         ship.set_ability_available(False)
         return True
     
+    # add orientation to pos in function call
     def do_ability_battle(self, ship: BattleShip, actor: Player, subject: Player, pos: Pos):
-        print("Battle")
+        if three_check(actor, pos, pos.horizontal):
+            for i in range(3):
+                if pos.horizontal:
+                    subject.shoot_grid(Pos(pos.x -1 + i, pos.y))
+                else:
+                    subject.shoot_grid(Pos(pos.x, pos.y -1 + i))
+
+        else:
+            return False
+        print("Barage")
         ship.set_ability_available(False)
         return True
 
     def do_ability_command(self, ship: CommandShip, actor: Player, subject: Player, pos: Pos):
-        print("Command")
+        if three_check(actor, pos):
+            three_mark(False, subject, pos)
+        else:
+            return False
+        print("Hide")
         ship.set_ability_available(False)
         return True
 
