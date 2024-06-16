@@ -7,3 +7,4 @@ class colors(Enum):
     VISIBLE = (128, 128, 192)
     GRID = (48, 69, 77)
     UNK_SHIP = (128, 69, 128)
+    BACKGROUND = (0, 0, 0)
