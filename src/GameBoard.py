@@ -172,129 +172,158 @@ class GameBoard:
                 # Check if the text box was clicked
         return None
 
+    def intermediate_save(func):
+        def wrapper(self, *args, **kwargs):
+            print(f"Executing {func.__name__} with arguments {args} and keyword arguments {kwargs}")
+            result = func(self, *args, **kwargs)
+            print(f"{func.__name__} returned {result}")
+            return result
+        return wrapper
+
+    @intermediate_save
+    def mouse_pressed(self, event):
+        ai_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]))
+        player_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]), Pos(0, self.cols + 1))
+
+        print(self.state)
+
+        if not self.playing_ai:
+            match self.state:
+                case states.INIT:
+                    resulting = self.check_ship_button(event)
+                    if resulting is not None:
+                        if self.last_clicked_ship_button is not None:
+                            print("last is not None")
+                            # for i in range(self.player.ships[last_clicked_ship_button].get_size()):
+                            #     self.player.ships[last_clicked_ship_button].set_hit_value(i, False)
+                            # self.player.shots = [[False for _ in row] for row in self.player.shots]
+                        self.last_clicked_ship_button = resulting
+                        # for i in range(self.player.ships[last_clicked_ship_button].get_size()):
+                        #     self.player.ships[last_clicked_ship_button].set_hit_value(i, True)
+                        # self.player.shots = [[True for _ in row] for row in self.player.shots]
+                        print(resulting)
+                    if player_grid_click:
+                        self.input_movement(player_grid_click)
+
+                    if ai_grid_click:  # Start game
+                        self.state = states.ATTACK
+                case states.ATTACK:
+                    if ai_grid_click is not None:
+                        if self.player_ai.shoot_grid(ai_grid_click):
+                            # TODO this is disabled for testing purousses
+                            # pass
+                            self.playing_ai = True
+
+                            self.state = states.MOVE
+                case states.MOVE:
+                    if player_grid_click:
+                        # _____________ for moving ships # TODO: intergrate with eventual statemachine
+                        ship: BaseShip = self.player.get_grid_ship(player_grid_click)
+                        if ship:
+                            if ship.get_cooldown() == 0:
+                                print("ship.getcooldown() == 0")
+                                pressed_key = self.wait_for_keypress()
+                                print("pressed_key")
+                                if pressed_key == pygame.K_DOWN:
+                                    self.player.move_ship(player_grid_click, 1, 0)
+                                if pressed_key == pygame.K_UP:
+                                    self.player.move_ship(player_grid_click, -1, 0)
+                                if pressed_key == pygame.K_LEFT:
+                                    self.player.move_ship(player_grid_click, 0, -1)
+                                if pressed_key == pygame.K_RIGHT:
+                                    self.player.move_ship(player_grid_click, 0, 1)
+                        # _____________________________________________________________
+                            self.state = states.ABILITY
+                case states.ABILITY:
+
+                    self.state = states.ATTACK
+                    self.playing_ai = True
+                case _:  # error / default case
+                    pass
+
+    @intermediate_save
+    def ai_game_logic(self):
+        self.AI.update(self.player)
+        while not self.player.shoot_grid(self.AI.shoot()):
+            pass
+
+        # End of Both player's turn
+        self.playing_ai = False
+        for i in range(len(self.player.ships)):
+            self.player.ships[i].reduce_cooldown()
+            self.player_ai.ships[i].reduce_cooldown()
+
+    @intermediate_save
+    def key_pressed(self, event):
+        match self.state:
+            case states.INIT:
+                if self.last_clicked_ship_button is not None:
+                    if event.key == pygame.K_DOWN:
+                        self.player.move_ship_one(self.last_clicked_ship_button, 1, 0)
+                    if event.key == pygame.K_UP:
+                        self.player.move_ship_one(self.last_clicked_ship_button, -1, 0)
+                    if event.key == pygame.K_LEFT:
+                        self.player.move_ship_one(self.last_clicked_ship_button, 0, -1)
+                    if event.key == pygame.K_RIGHT:
+                        self.player.move_ship_one(self.last_clicked_ship_button, 0, 1)
+                    if event.key == pygame.K_r:
+                        self.player.attempt_rotation(self.last_clicked_ship_button)
+
+    def check_win_condition(self):
+        result = self.win_condition()
+        if result is not None:
+            txt = None
+            if result:
+                txt = self.font.render("YOU WON!!!", True, (255, 255, 255))
+                print("Player won!")
+            else:
+                txt = self.font.render("YOU LOST :<", True, (255, 255, 255))
+                print("AI won!")
+            # TODO Exit game
+            self.screen.blit(txt, (((self.cols/2) * (self.RECT_WIDTH + self.MARGIN)),
+                             (self.rows * (self.RECT_HEIGHT + self.MARGIN)) + self.RECT_HEIGHT/4))
+
+    def gameloop(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                self.key_pressed(event)
+            if event.type == pygame.QUIT:
+                self.running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.mouse_pressed(event)
+
+        # call AI logic
+        if self.playing_ai:
+            self.ai_game_logic()
+
+        # Fill the background
+        self.screen.fill(colors.BACKGROUND.value)
+
+        # Draw the grid
+        self.draw_AI_grid()
+        self.draw_player_grid()
+
+        self.draw_ui()
+
+        # print(self.player_ai.ships)
+        # print(self.player.ships)
+        self.check_win_condition()
+
+        # print("------------ CYCLE ------------")
+
+        # Update the display
+        pygame.display.flip()
+
     def run(self):
         self.database = Database.Database()
         self.database.start_new_game()
         self.database.write_gameboard(self)
 
-        running = True
+        self.running = True
         self.state = states.INIT
-        playing_ai = False
+        self.playing_ai = False
 
-        last_clicked_ship_button = None
+        self.last_clicked_ship_button = None
 
-        while running:
-            for event in pygame.event.get():
-                # if event.type == pygame.KEYDOWN:
-                #     match self.state:
-                #         case states.INIT:
-                #             if last_clicked_ship_button is not None:
-                #                 if event.key == pygame.K_DOWN:
-                #                     self.player.move_ship_one(last_clicked_ship_button, 1, 0)
-                #                 if event.key == pygame.K_UP:
-                #                     self.player.move_ship_one(last_clicked_ship_button, -1, 0)
-                #                 if event.key == pygame.K_LEFT:
-                #                     self.player.move_ship_one(last_clicked_ship_button, 0, -1)
-                #                 if event.key == pygame.K_RIGHT:
-                #                     self.player.move_ship_one(last_clicked_ship_button, 0, 1)
-                #
-                if event.type == pygame.QUIT:
-                    running = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    ai_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]))
-                    player_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]), Pos(0, self.cols + 1))
-
-                    print(self.state)
-                    self.database.write_gameboard(self)
-
-                    if not playing_ai:
-                        match self.state:
-                            case states.INIT:
-                                # resulting = self.check_ship_button(event)
-                                # if resulting is not None:
-                                #     if last_clicked_ship_button is not None:
-                                #         for i in range(self.player.ships[last_clicked_ship_button].get_size()):
-                                #             self.player.ships[last_clicked_ship_button].set_hit_value(i, False)
-                                #     last_clicked_ship_button = resulting
-                                #     for i in range(self.player.ships[last_clicked_ship_button].get_size()):
-                                #         self.player.ships[last_clicked_ship_button].set_hit_value(i, True)
-                                #     print(resulting)
-                                if player_grid_click:
-                                    self.input_movement(player_grid_click)
-
-                                if ai_grid_click:  # Start game
-                                    self.state = states.ATTACK
-                            case states.ATTACK:
-                                if ai_grid_click is not None:
-                                    if self.player_ai.shoot_grid(ai_grid_click):
-                                        # TODO this is disabled for testing purousses
-                                        # pass
-                                        playing_ai = True
-
-                                        self.state = states.MOVE
-                            case states.MOVE:
-                                if player_grid_click:
-                                    # _____________ for moving ships # TODO: intergrate with eventual statemachine
-                                    ship: BaseShip = self.player.get_grid_ship(player_grid_click)
-                                    if ship:
-                                        if ship.get_cooldown() == 0:
-                                            print("ship.getcooldown() == 0")
-                                            pressed_key = self.wait_for_keypress()
-                                            print("pressed_key")
-                                            if pressed_key == pygame.K_DOWN:
-                                                self.player.move_ship(player_grid_click, 1, 0)
-                                            if pressed_key == pygame.K_UP:
-                                                self.player.move_ship(player_grid_click, -1, 0)
-                                            if pressed_key == pygame.K_LEFT:
-                                                self.player.move_ship(player_grid_click, 0, -1)
-                                            if pressed_key == pygame.K_RIGHT:
-                                                self.player.move_ship(player_grid_click, 0, 1)
-                                    # _____________________________________________________________
-                                        self.state = states.ABILITY
-                            case states.ABILITY:
-
-                                self.state = states.ATTACK
-                                playing_ai = True
-                            case _:  # error / default case
-                                pass
-
-            # call AI logic
-            if playing_ai:
-                self.AI.update(self.player)
-                while not self.player.shoot_grid(self.AI.shoot()):
-                    pass
-
-                # End of Both player's turn
-                playing_ai = False
-                for i in range(len(self.player.ships)):
-                    self.player.ships[i].reduce_cooldown()
-                    self.player_ai.ships[i].reduce_cooldown()
-
-            # Fill the background
-            self.screen.fill(colors.BACKGROUND.value)
-
-            # Draw the grid
-            self.draw_AI_grid()
-            self.draw_player_grid()
-
-            self.draw_ui()
-
-            # print(self.player_ai.ships)
-            # print(self.player.ships)
-
-            result = self.win_condition()
-            if result is not None:
-                txt = None
-                if result:
-                    txt = self.font.render("YOU WON!!!", True, (255, 255, 255))
-                    print("Player won!")
-                else:
-                    txt = self.font.render("YOU LOST :<", True, (255, 255, 255))
-                    print("AI won!")
-                # TODO Exit game
-                self.screen.blit(txt, (((self.cols/2) * (self.RECT_WIDTH + self.MARGIN)),
-                                 (self.rows * (self.RECT_HEIGHT + self.MARGIN)) + self.RECT_HEIGHT/4))
-            # print("------------ CYCLE ------------")
-
-            # Update the display
-            pygame.display.flip()
+        while self.running:
+            self.gameloop()

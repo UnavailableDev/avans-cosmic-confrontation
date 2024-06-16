@@ -109,14 +109,19 @@ class Player:
 
         for i in range(len(self.ships)):
             ship_pos = self.ships[i].get_position()
-            # if (ship_pos.x >= self.rows) or (ship_pos.y >= self.cols):
-            #     return False  # Ignore ships with starting point outside the grid
+
+            if (ship_pos.x >= self.rows) or (ship_pos.y >= self.cols):
+                return False  # Ignore ships with starting point outside the grid
 
             for j in range(self.ships[i].get_size()):
+                if (ship_pos.y + (j * (not ship_pos.horizontal))) >= self.rows or (ship_pos.x + (j * (ship_pos.horizontal))) >= self.cols:
+                    return True
+
                 if temp_array[ship_pos.y + (j * (not ship_pos.horizontal))][ship_pos.x +
                                                                             (j * (ship_pos.horizontal))] is True:
                     # print("SHIP COLLISION")
                     return True  # this means that there is a boat collision
+
                 temp_array[ship_pos.y + (j * (not ship_pos.horizontal))][ship_pos.x +
                                                                          (j * (ship_pos.horizontal))] = True
 
@@ -146,25 +151,23 @@ class Player:
         ship_pos = potential_moved_ship.get_position()
 
         if (vertical != 0):
-            if ship_pos.horizontal is False:
-                if (vertical == -1):
-                    if ship_pos.y-1 >= 0:
-                        ship_pos.y -= 1
-                elif (vertical == 1):
-                    if ship_pos.y+1+potential_moved_ship.get_size() < self.rows:
-                        ship_pos.y += 1
-        elif (horizontal != 0):
-            if ship_pos.horizontal is True:
-                if (horizontal == -1):
-                    if ship_pos.x-1 >= 0:
-                        ship_pos.x -= 1
-                elif (horizontal == 1):
-                    if ship_pos.x+1+potential_moved_ship.get_size() < self.cols:
-                        ship_pos.x += 1
+            if (vertical == -1):
+                if ship_pos.y-1 >= 0:
+                    ship_pos.y -= 1
+            elif (vertical == 1):
+                if ship_pos.y+1 < self.rows:
+                    ship_pos.y += 1
+        if (horizontal != 0):
+            if (horizontal == -1):
+                if ship_pos.x-1 >= 0:
+                    ship_pos.x -= 1
+            elif (horizontal == 1):
+                if ship_pos.x+1 < self.cols:
+                    ship_pos.x += 1
 
         potential_moved_ship.set_position(ship_pos)
 
-        if not self.ships_colliding():
+        if self.ships_colliding():
             potential_moved_ship.set_position(previous_ship_pos)
 
         return True
@@ -195,7 +198,7 @@ class Player:
 
         potential_moved_ship.set_position(ship_pos)
 
-        if not self.ships_colliding():
+        if self.ships_colliding():
             print("move resulted in ships colliding")
             potential_moved_ship.set_position(previous_ship_pos)
 
@@ -265,3 +268,13 @@ class Player:
 
     def get_nickname(self) -> str:
         return self.nickname
+
+    def attempt_rotation(self, ship_index: int) -> bool:
+        ship_to_rotate = self.ships[ship_index]
+
+        ship_to_rotate.get_position().horizontal = (not ship_to_rotate.get_position().horizontal)
+
+        if self.ships_colliding():
+            ship_to_rotate.get_position().horizontal = (not ship_to_rotate.get_position().horizontal)
+
+        return True
