@@ -2,6 +2,7 @@ import pygame
 from ships import BaseShip, BattleShip, ScoutShip
 from datatypes import Position as Pos
 from Player import Player
+from AI import AI
 
 from enum import Enum
 
@@ -51,6 +52,8 @@ class GameBoard:
 
         self.player = Player(rows, cols)
         self.player_ai = Player(rows, cols)
+
+        self.AI = AI(rows, cols)
 
         # Set up the display
         # self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
@@ -162,7 +165,9 @@ class GameBoard:
                                     if self.player_ai.shoot_grid(ai_grid_click):
                                         # TODO this is disabled for testing purousses
                                         # pass
-                                        state = states.MOVE
+                                        playing_ai = True
+
+                                        state = states.ATTACK
                             case states.MOVE:
                                 if player_grid_click : 
                                 # # _____________ for moving ships # TODO: intergrate with eventual statemachine
@@ -191,7 +196,8 @@ class GameBoard:
             # call AI logic
             if playing_ai:
                 
-
+                self.AI.update(self.player)
+                self.player.shoot_grid(self.AI.shoot())
                 playing_ai = False
 
             # Fill the background

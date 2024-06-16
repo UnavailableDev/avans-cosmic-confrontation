@@ -55,10 +55,10 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 - [ ] Custom nicknames @Seger
 - [x] Shoot position @Joshua
 - [x] State machine which turn @Joshua
-- [ ] win/loss condition
+- [x] win/loss condition @Joshua
 - [ ] Dynamic board size between 8-16 (always a square shape)
 - [ ] Make abilities
-- [ ] Make AI
+- [~] Make AI @Joshua
 - [ ] Init state where the player (and AI) place their ships on the grid
 
 
