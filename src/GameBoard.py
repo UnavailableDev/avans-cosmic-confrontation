@@ -9,28 +9,12 @@ from enum import Enum
 
 from Visitor import Visitor
 
+
 class states(Enum):
     INIT = 0
     ATTACK = 1
     MOVE = 2
     ABILITY = 3
-
-# # Constants
-# SCREEN_WIDTH = 800
-# SCREEN_HEIGHT = 600
-# BACKGROUND_COLOR = (0, 0, 0)
-# GRID_COLOR = (255, 255, 255)
-# RECT_WIDTH = 50
-# RECT_HEIGHT = 50
-# MARGIN = 5  # Space between rectangles
-
-# Access elements
-
-
-# Access elements again
-# for i in range(len(vec)):
-#     print(vec[i], end=' ')
-# print()
 
 
 class GameBoard:
@@ -110,6 +94,7 @@ class GameBoard:
             pygame.draw.rect(self.screen, color, button)
             self.screen.blit(text_surface, text_rect)
 
+    # function to check for win condition
     def win_condition(self):
         player_alive: bool = False
         player_ai_alive: bool = False
@@ -130,6 +115,7 @@ class GameBoard:
         else:
             return None
 
+    # function to check which square was clicked based on mouse Pos
     def click_local_grid(self, pos: Pos, offset: Pos = Pos(0, 0)):
         cell_width = (self.RECT_WIDTH + self.MARGIN)
         cell_height = (self.RECT_HEIGHT + self.MARGIN)
@@ -167,6 +153,7 @@ class GameBoard:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     return event.pos
 
+    # returns index of ship ability button if it is pressed.
     def check_ship_button(self, event) -> int:
         for i, rect in enumerate(self.buttons):
             if rect.collidepoint(event.pos):
@@ -175,11 +162,17 @@ class GameBoard:
                 # Check if the text box was clicked
         return None
 
+    def save_gameboard(self):
+        self.database.write_gameboard(self)
+        return
+
+    # decorater function to save data to database
     def intermediate_save(func):
         def wrapper(self, *args, **kwargs):
-            print(f"Executing {func.__name__} with arguments {args} and keyword arguments {kwargs}")
+            # print(f"Executing {func.__name__} with arguments {args} and keyword arguments {kwargs}")
             result = func(self, *args, **kwargs)
-            print(f"{func.__name__} returned {result}")
+            self.save_gameboard()
+            # print(f"{func.__name__} returned {result}")
             return result
         return wrapper
 
@@ -244,7 +237,7 @@ class GameBoard:
                     if idx is not None:
                         pos = None
                         ev = self.wait_for_keypress()
-                        if not isinstance(ev, int): # Verify that the type is not a key pressed
+                        if not isinstance(ev, int):  # Verify that the type is not a key pressed
                             if isinstance(self.player.ships[idx], CommandShip):
                                 pos = self.click_local_grid(Pos(ev[0], ev[1]), Pos(0, self.cols + 1))
                             else:
@@ -343,4 +336,3 @@ class GameBoard:
 
         while self.running:
             self.gameloop()
-
