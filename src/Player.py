@@ -31,17 +31,16 @@ class Player:
         self.ships.append(CommandShip())
 
         # TODO make this dynamic / from the outside
-        self.ships[7].set_position(Pos(0 + self.cols, 0))
-        self.ships[6].set_position(Pos(0 + self.cols, 1))
-        self.ships[5].set_position(Pos(0 + self.cols, 2))
-        self.ships[4].set_position(Pos(0 + self.cols, 3))
-        self.ships[3].set_position(Pos(0 + self.cols, 4))
-        self.ships[2].set_position(Pos(0 + self.cols, 5))
-        self.ships[1].set_position(Pos(0 + self.cols, 6))
-        self.ships[0].set_position(Pos(0 + self.cols, 7))
+        self.ships[7].set_position(Pos(0, 0))
+        self.ships[6].set_position(Pos(0, 1))
+        self.ships[5].set_position(Pos(0, 2))
+        self.ships[4].set_position(Pos(0, 3))
+        self.ships[3].set_position(Pos(0, 4))
+        self.ships[2].set_position(Pos(0, 5))
+        self.ships[1].set_position(Pos(0, 6))
+        self.ships[0].set_position(Pos(0, 7))
 
-        self.rand_ship_layout()
-
+        # self.rand_ship_layout()
 
     def shoot_ships(self, pos: Pos):
         ship: BaseShip = self.get_grid_ship(pos)
@@ -65,7 +64,6 @@ class Player:
         # Invalid, position was already hit
         return False
 
-
     def rand_ship_layout(self):
         for i in range(len(self.ships)):
             while not self.new_ship_pos(i):
@@ -73,7 +71,7 @@ class Player:
                 self.ships[i].set_position(Pos(self.rows, self.cols))
 
             # print(i, self.ships[i].get_position())
-    
+
     def new_ship_pos(self, idx: int):
         size = self.ships[idx].get_size()
         hor: bool = bool(random.getrandbits(1))
@@ -99,7 +97,7 @@ class Player:
             self.ships[idx].set_position(Pos(self.rows, self.cols))
             return False
 
-        return True # Success
+        return True  # Success
 
     def ships_colliding(self) -> bool:
         temp_array: bool = []
@@ -111,8 +109,8 @@ class Player:
 
         for i in range(len(self.ships)):
             ship_pos = self.ships[i].get_position()
-            if (ship_pos.x >= self.rows) or (ship_pos.y >= self.cols):
-                return False # Ignore ships with starting point outside the grid
+            # if (ship_pos.x >= self.rows) or (ship_pos.y >= self.cols):
+            #     return False  # Ignore ships with starting point outside the grid
 
             for j in range(self.ships[i].get_size()):
                 if temp_array[ship_pos.y + (j * (not ship_pos.horizontal))][ship_pos.x +
@@ -140,11 +138,12 @@ class Player:
             #
         return False
 
-    # TODO add True return if movement got accepted
-    def move_ship(self, pos: Pos, vertical: int, horizontal: int) -> bool:
-        potential_moved_ship = self.get_grid_ship(pos)
+    def move_ship_one(self, ship_index: int, vertical: int, horizontal: int) -> bool:
+        potential_moved_ship = self.ships[ship_index]
+        previous_ship_pos = Pos(potential_moved_ship.get_position().x,
+                                potential_moved_ship.get_position().y, potential_moved_ship.get_position().horizontal)
+
         ship_pos = potential_moved_ship.get_position()
-        previous_ship_pos = Pos(ship_pos.x, ship_pos.y, ship_pos.horizontal)
 
         if (vertical != 0):
             if ship_pos.horizontal is False:
@@ -170,6 +169,38 @@ class Player:
 
         return True
 
+    # TODO add True return if movement got accepted
+
+    def move_ship(self, pos: Pos, vertical: int, horizontal: int) -> bool:
+        potential_moved_ship = self.get_grid_ship(pos)
+        ship_pos = potential_moved_ship.get_position()
+        previous_ship_pos = Pos(ship_pos.x, ship_pos.y, ship_pos.horizontal)
+
+        if (vertical != 0):
+            if ship_pos.horizontal is False:
+                if (vertical == -1):
+                    if ship_pos.y-1 >= 0:
+                        ship_pos.y -= 1
+                elif (vertical == 1):
+                    if ship_pos.y+1+potential_moved_ship.get_size() < self.rows:
+                        ship_pos.y += 1
+        elif (horizontal != 0):
+            if ship_pos.horizontal is True:
+                if (horizontal == -1):
+                    if ship_pos.x-1 >= 0:
+                        ship_pos.x -= 1
+                elif (horizontal == 1):
+                    if ship_pos.x+1+potential_moved_ship.get_size() < self.cols:
+                        ship_pos.x += 1
+
+        potential_moved_ship.set_position(ship_pos)
+
+        if not self.ships_colliding():
+            print("move resulted in ships colliding")
+            potential_moved_ship.set_position(previous_ship_pos)
+
+        return True
+
     def get_grid_ship(self, pos: Pos) -> BaseShip:
         for i in range(0, len(self.ships)):
             # get size, orientation, and position compare if in range
@@ -181,7 +212,7 @@ class Player:
                 ship_end = Pos(ship_pos.x + size-1, ship_pos.y)
             else:
                 ship_end = Pos(ship_pos.x, ship_pos.y + size-1)
-            
+
             # print("Ship ", size, ship_pos, ship_end)
 
             if (ship_pos.x <= pos.x and pos.x <= ship_end.x):
@@ -198,14 +229,14 @@ class Player:
             pass
             # if self.get_grid_shot(pos):
             #     color = colors.VISIBLE.value
-            
+
             #     # see if there is a ship
             #     if self.get_grid_ship(pos):
             #         color = colors.UNK_SHIP.value
 
             #         # see if the ship is hit in that position
             #         if None:
-            #             color = colors.HIT.value          
+            #             color = colors.HIT.value
         else:
             # see if there is a ship
             if self.get_grid_ship(pos):
@@ -216,13 +247,13 @@ class Player:
                 color = colors.VISIBLE.value
             else:
                 color = colors.SHOT.value
-            
+
             if self.get_grid_ship(pos):
                 if enemy:
                     color = colors.UNK_SHIP.value
                     # see if the ship is hit in that position
                     if None:
-                        color = colors.HIT.value 
+                        color = colors.HIT.value
                 else:
                     color = colors.HIT.value
 

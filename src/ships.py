@@ -43,6 +43,9 @@ class BaseShip:
     def set_hit(self, index: int):
         self.__hits[index] = True
 
+    def set_hit_value(self, index: int, value: bool):
+        self.__hits[index] = value
+
     def set_hits(self, hit_list: [int]):
         self.__hits = hit_list
 
@@ -54,7 +57,7 @@ class BaseShip:
 
     def set_cooldown(self, cooldown: int):
         self.__cooldown = cooldown
-    
+
     def reduce_cooldown(self):
         if self.__cooldown > 0:
             self.__cooldown -= 1

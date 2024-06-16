@@ -161,7 +161,7 @@ class GameBoard:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                 elif event.type == pygame.KEYDOWN:
-                    # print(f"Key {pygame.key.name(event.key)} was pressed")
+                    print(f"Key {pygame.key.name(event.key)} was pressed")
                     return event.key  # Return the key that was pressed
 
     def check_ship_button(self, event) -> int:
@@ -181,8 +181,23 @@ class GameBoard:
         self.state = states.INIT
         playing_ai = False
 
+        last_clicked_ship_button = None
+
         while running:
             for event in pygame.event.get():
+                # if event.type == pygame.KEYDOWN:
+                #     match self.state:
+                #         case states.INIT:
+                #             if last_clicked_ship_button is not None:
+                #                 if event.key == pygame.K_DOWN:
+                #                     self.player.move_ship_one(last_clicked_ship_button, 1, 0)
+                #                 if event.key == pygame.K_UP:
+                #                     self.player.move_ship_one(last_clicked_ship_button, -1, 0)
+                #                 if event.key == pygame.K_LEFT:
+                #                     self.player.move_ship_one(last_clicked_ship_button, 0, -1)
+                #                 if event.key == pygame.K_RIGHT:
+                #                     self.player.move_ship_one(last_clicked_ship_button, 0, 1)
+                #
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -195,9 +210,15 @@ class GameBoard:
                     if not playing_ai:
                         match self.state:
                             case states.INIT:
-                                resulting = self.check_ship_button(event)  # TEST
-                                if resulting is not None:  # TEST
-                                    print(resulting)  # TEST
+                                # resulting = self.check_ship_button(event)
+                                # if resulting is not None:
+                                #     if last_clicked_ship_button is not None:
+                                #         for i in range(self.player.ships[last_clicked_ship_button].get_size()):
+                                #             self.player.ships[last_clicked_ship_button].set_hit_value(i, False)
+                                #     last_clicked_ship_button = resulting
+                                #     for i in range(self.player.ships[last_clicked_ship_button].get_size()):
+                                #         self.player.ships[last_clicked_ship_button].set_hit_value(i, True)
+                                #     print(resulting)
                                 if player_grid_click:
                                     self.input_movement(player_grid_click)
 
@@ -210,14 +231,16 @@ class GameBoard:
                                         # pass
                                         playing_ai = True
 
-                                        self.state = states.ATTACK
+                                        self.state = states.MOVE
                             case states.MOVE:
                                 if player_grid_click:
                                     # _____________ for moving ships # TODO: intergrate with eventual statemachine
                                     ship: BaseShip = self.player.get_grid_ship(player_grid_click)
                                     if ship:
                                         if ship.get_cooldown() == 0:
+                                            print("ship.getcooldown() == 0")
                                             pressed_key = self.wait_for_keypress()
+                                            print("pressed_key")
                                             if pressed_key == pygame.K_DOWN:
                                                 self.player.move_ship(player_grid_click, 1, 0)
                                             if pressed_key == pygame.K_UP:
