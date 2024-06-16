@@ -89,6 +89,9 @@ class GameBoard:
         for i, button in enumerate(self.buttons):
             color = colors.GRID.value #Default
 
+            text_surface = self.font.render(self.player.ships[i].__name__(), True, colors.BACKGROUND.value)
+            text_rect = text_surface.get_rect(center=button.center)
+
             if self.state == states.INIT:
                 color = colors.SHIP.value
                 if button.collidepoint(pygame.mouse.get_pos()):
@@ -105,6 +108,7 @@ class GameBoard:
                     color = colors.HIT.value
 
             pygame.draw.rect(self.screen, color, button)
+            self.screen.blit(text_surface, text_rect)
 
 
     def win_condition(self):
@@ -113,15 +117,11 @@ class GameBoard:
         for ship in self.player.ships:
             ship: BaseShip = ship
             if ship.is_alive():
-                pass
-            else:
                 player_alive = True
         
         for ship in self.player_ai.ships:
             ship: BaseShip = ship
             if ship.is_alive():
-                pass
-            else:
                 player_ai_alive = True
 
         if not player_alive:
