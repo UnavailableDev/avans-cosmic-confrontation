@@ -56,10 +56,10 @@ class Player:
         return False
 
     def shoot_grid(self, pos: Pos):
-        if self.shots[pos.x][pos.y] == False:
-            self.shots[pos.x][pos.y] = True
-            self.shoot_ships(pos)
-            return True
+        # if self.shots[pos.x][pos.y] == False:
+        self.shots[pos.x][pos.y] = True
+        self.shoot_ships(pos)
+        return True
 
         # Invalid, position was already hit
         return False
