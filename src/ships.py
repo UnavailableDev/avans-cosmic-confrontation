@@ -66,7 +66,7 @@ class BaseShip:
         self.__ability = value
 
     def action(self):
-        pass
+        return self.__cooldown > 0
 
     def __name__(self) -> str:
         return "BaseShip"
@@ -79,7 +79,8 @@ class ScoutShip(BaseShip):
     def action(self):
         # Radar scan
         # clear a 3x3 area
-        pass
+        if super().action():
+            pass
 
     def __name__(self) -> str:
         return "ScoutShip"
@@ -92,7 +93,8 @@ class HunterShip(BaseShip):
     def action(self):
         # Homing missile
         # Hit the nearest ship
-        pass
+        if super().action():
+            pass
 
     def __name__(self) -> str:
         return "HunterShip"
@@ -105,7 +107,8 @@ class CruiserShip(BaseShip):
     def action(self):
         # EMP
         # Cooldown ship
-        pass
+        if super().action():
+            pass
 
     def __name__(self) -> str:
         return "CruiserShip"
@@ -117,7 +120,8 @@ class BattleShip(BaseShip):
 
     def action(self):
         # Shoot 3 connection grid points (horizontal or vertical)
-        pass
+        if super().action():
+            pass
 
     def __name__(self) -> str:
         return "BattleShip"
@@ -130,7 +134,8 @@ class CommandShip(BaseShip):
     def action(self):
         # Space smoke
         # Hide a 3x3 area
-        pass
+        if super().action():
+            pass
 
     def __name__(self) -> str:
         return "CommandShip"
