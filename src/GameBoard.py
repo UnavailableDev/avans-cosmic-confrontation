@@ -61,11 +61,10 @@ class GameBoard:
         pygame.display.set_caption("Grid of Rectangles")
         self.setup_buttons()
 
-
     def setup_buttons(self):
         for y in range(len(self.player.ships)):
-            rect  = pygame.Rect((self.cols + 1) * (self.RECT_WIDTH + self.MARGIN), (y + self.cols + 1) * (self.RECT_HEIGHT + self.MARGIN),
-                300, self.RECT_HEIGHT)
+            rect = pygame.Rect((self.cols + 1) * (self.RECT_WIDTH + self.MARGIN), (y + self.cols + 1) * (self.RECT_HEIGHT + self.MARGIN),
+                               300, self.RECT_HEIGHT)
             self.buttons.append(rect)
 
     def draw_square(self, col, row, color):
@@ -87,7 +86,7 @@ class GameBoard:
 
     def draw_ui(self):
         for i, button in enumerate(self.buttons):
-            color = colors.GRID.value #Default
+            color = colors.GRID.value  # Default
 
             text_surface = self.font.render(self.player.ships[i].__name__(), True, colors.BACKGROUND.value)
             text_rect = text_surface.get_rect(center=button.center)
@@ -98,10 +97,10 @@ class GameBoard:
                     color = colors.SHOT.value
             else:
                 if self.player.ships[i].is_alive():
-                    color = colors.SHIP.value 
+                    color = colors.SHIP.value
                     if self.player.ships[i].ability_available() and self.player.ships[i].get_cooldown() == 0:
                         if button.collidepoint(pygame.mouse.get_pos()):
-                            color = colors.SHOT.value 
+                            color = colors.SHOT.value
                     else:
                         color = colors.GRID.value
                 else:
@@ -109,7 +108,6 @@ class GameBoard:
 
             pygame.draw.rect(self.screen, color, button)
             self.screen.blit(text_surface, text_rect)
-
 
     def win_condition(self):
         player_alive: bool = False
@@ -166,6 +164,14 @@ class GameBoard:
                     # print(f"Key {pygame.key.name(event.key)} was pressed")
                     return event.key  # Return the key that was pressed
 
+    def check_for_ability_button_press(self, event) -> int:
+        for i, rect in enumerate(self.buttons):
+            if rect.collidepoint(event.pos):
+                # Call the associated function
+                return i
+                # Check if the text box was clicked
+        return None
+
     def run(self):
         self.database = Database.Database()
         self.database.start_new_game()
@@ -189,10 +195,13 @@ class GameBoard:
                     if not playing_ai:
                         match self.state:
                             case states.INIT:
+                                resulting = self.check_for_ability_button_press(event)  # TEST
+                                if resulting is not None:  # TEST
+                                    print(resulting)  # TEST
                                 if player_grid_click:
                                     self.input_movement(player_grid_click)
-                                
-                                if ai_grid_click: # Start game
+
+                                if ai_grid_click:  # Start game
                                     self.state = states.ATTACK
                             case states.ATTACK:
                                 if ai_grid_click is not None:
@@ -260,7 +269,8 @@ class GameBoard:
                     txt = self.font.render("YOU LOST :<", True, (255, 255, 255))
                     print("AI won!")
                 # TODO Exit game
-                self.screen.blit(txt, (((self.cols/2) * (self.RECT_WIDTH + self.MARGIN)), (self.rows * (self.RECT_HEIGHT + self.MARGIN)) + self.RECT_HEIGHT/4))
+                self.screen.blit(txt, (((self.cols/2) * (self.RECT_WIDTH + self.MARGIN)),
+                                 (self.rows * (self.RECT_HEIGHT + self.MARGIN)) + self.RECT_HEIGHT/4))
             # print("------------ CYCLE ------------")
 
             # Update the display
