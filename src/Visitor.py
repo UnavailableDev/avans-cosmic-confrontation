@@ -115,11 +115,11 @@ class Visitor:
         return True
 
     def do_ability_cuiser(self, ship: CruiserShip, actor: Player, subject: Player, pos: Pos):
-        ship = subject.get_grid_ship()
-        if ship is None:
+        sh = subject.get_grid_ship(pos)
+        if sh is None:
             return False
 
-        ship.set_cooldown(3)
+        sh.set_cooldown(3)
 
         print("EMP")
         ship.set_ability_available(False)
