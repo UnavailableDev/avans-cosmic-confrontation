@@ -2,8 +2,7 @@ import pygame
 from ships import BaseShip, BattleShip, ScoutShip
 from datatypes import Position as Pos
 from Player import Player
-from Database import Database
-
+import Database
 from enum import Enum
 
 
@@ -99,7 +98,7 @@ class GameBoard:
                     return event.key  # Return the key that was pressed
 
     def run(self):
-        self.database = Database()
+        self.database = Database.Database()
         self.database.start_new_game()
         self.database.write_gameboard(self)
         self.database.retrieve_stored_games()

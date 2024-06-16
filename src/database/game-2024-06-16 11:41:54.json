@@ -1,5 +1,5 @@
 {
-    "move-0": {
+    "move-1": {
         "player": {
             "nickname": "undefined nickname",
             "shots": [
@@ -130,18 +130,20 @@
                     "x": 2,
                     "y": 2,
                     "horizontal": false,
+                    "size": 2,
                     "hit": [
                         false,
                         false
                     ],
                     "cooldown": 0,
-                    "ablitity_available": true,
+                    "ability_available": true,
                     "type": "ScoutShip"
                 },
                 "ship1": {
                     "x": 4,
                     "y": 6,
                     "horizontal": true,
+                    "size": 4,
                     "hit": [
                         false,
                         false,
@@ -149,7 +151,7 @@
                         false
                     ],
                     "cooldown": 0,
-                    "ablitity_available": true,
+                    "ability_available": true,
                     "type": "BattleShip"
                 }
             }
@@ -284,18 +286,20 @@
                     "x": 2,
                     "y": 2,
                     "horizontal": false,
+                    "size": 2,
                     "hit": [
                         false,
                         false
                     ],
                     "cooldown": 0,
-                    "ablitity_available": true,
+                    "ability_available": true,
                     "type": "ScoutShip"
                 },
                 "ship1": {
                     "x": 4,
                     "y": 6,
                     "horizontal": true,
+                    "size": 4,
                     "hit": [
                         false,
                         false,
@@ -303,10 +307,12 @@
                         false
                     ],
                     "cooldown": 0,
-                    "ablitity_available": true,
+                    "ability_available": true,
                     "type": "BattleShip"
                 }
             }
         }
-    }
+    },
+    "game_move_count": 1,
+    "board_size": 10
 }

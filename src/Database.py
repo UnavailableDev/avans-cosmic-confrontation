@@ -1,8 +1,9 @@
 import json
-import GameBoard
+from GameBoard import GameBoard
 from typing import Any, Dict
 from datetime import datetime
 import os
+from ships import BaseShip, ScoutShip, HunterShip, BattleShip, CommandShip, CruiserShip, Pos
 
 
 class Database:
@@ -21,6 +22,82 @@ class Database:
         # for file_name in file_names:
         #     print(file_name)
         return file_names
+
+    def create_gameboard_from_file(self, screen, data_file_name: str) -> GameBoard:
+        with open(f"database/{data_file_name}", 'r') as json_file:
+            loaded_data = json.load(json_file)
+
+        board_size = loaded_data["board_size"]
+
+        new_gameboard = GameBoard(screen, board_size, board_size)
+
+        turns_played = loaded_data["game_move_count"]
+        last_game_state = loaded_data[f"move-{turns_played}"]
+
+        new_gameboard.player.set_nickname(last_game_state["player"]["nickname"])
+        new_gameboard.player.shots = last_game_state["player"]["shots"]
+        new_gameboard.player.ships = []
+        for i in range(last_game_state["player"]["ships"]["AmountOfShips"]):
+            ship_data = last_game_state["player"]["ships"][f"ship{i}"]
+            ship_size = ship_data["size"]
+            ship_type_str = ship_data["type"]
+
+            ship = BaseShip(ship_size)
+            if ship_type_str == ScoutShip().__name__():
+                ship = ScoutShip()
+            if ship_type_str == HunterShip().__name__():
+                ship = HunterShip()
+            if ship_type_str == BattleShip().__name__():
+                ship = BattleShip()
+            if ship_type_str == CommandShip().__name__():
+                ship = CommandShip()
+            if ship_type_str == CruiserShip().__name__():
+                ship = CruiserShip()
+
+            ship_pos = Pos(ship_data["x"], ship_data["y"], ship_data["horizontal"])
+            ship.set_position(ship_pos)
+
+            ship.set_hits(ship_data["hit"])
+            ship.set_cooldown(ship_data["cooldown"])
+            ship.set_ability_available(ship_data["ability_available"])
+
+            new_gameboard.player.ships.append(ship)
+
+        new_gameboard.player_ai.set_nickname(last_game_state["player_ai"]["nickname"])
+        new_gameboard.player_ai.shots = last_game_state["player_ai"]["shots"]
+        new_gameboard.player_ai.ships = []
+        for i in range(last_game_state["player_ai"]["ships"]["AmountOfShips"]):
+            ship_data = last_game_state["player_ai"]["ships"][f"ship{i}"]
+            ship_size = ship_data["size"]
+            ship_type_str = ship_data["type"]
+
+            ship = BaseShip(ship_size)
+            if ship_type_str == ScoutShip().__name__():
+                ship = ScoutShip()
+            if ship_type_str == HunterShip().__name__():
+                ship = HunterShip()
+            if ship_type_str == BattleShip().__name__():
+                ship = BattleShip()
+            if ship_type_str == CommandShip().__name__():
+                ship = CommandShip()
+            if ship_type_str == CruiserShip().__name__():
+                ship = CruiserShip()
+
+            ship_pos = Pos(ship_data["x"], ship_data["y"], ship_data["horizontal"])
+            ship.set_position(ship_pos)
+
+            ship.set_hits(ship_data["hit"])
+            ship.set_cooldown(ship_data["cooldown"])
+            ship.set_ability_available(ship_data["ability_available"])
+
+            new_gameboard.player_ai.ships.append(ship)
+
+        for i in range(len(new_gameboard.player_ai.ships)):
+            print(new_gameboard.player_ai.ships[i].__name__())
+
+        return new_gameboard
+
+# from ships import BaseShip, ScoutShip, HunterShip, BattleShip, CommandShip, CruiserShip, Pos
 
     def start_new_game(self) -> None:
         # Get the current date and time
@@ -44,7 +121,14 @@ class Database:
         else:
             with open(self.file_path, 'r') as json_file:
                 loaded_data = json.load(json_file)
+
+        self.game_move_count += 1
+
         loaded_data[f"move-{self.game_move_count}"] = {}
+
+        loaded_data["game_move_count"] = self.game_move_count
+        loaded_data["board_size"] = game_board.rows
+
         data = loaded_data[f"move-{self.game_move_count}"]
 
         data["player"] = {}
@@ -59,10 +143,11 @@ class Database:
             data["player"]["ships"][f"ship{i}"]["x"] = game_board.player.ships[i].get_position().x
             data["player"]["ships"][f"ship{i}"]["y"] = game_board.player.ships[i].get_position().y
             data["player"]["ships"][f"ship{i}"]["horizontal"] = game_board.player.ships[i].get_position().horizontal
+            data["player"]["ships"][f"ship{i}"]["size"] = game_board.player.ships[i].get_size()
 
             data["player"]["ships"][f"ship{i}"]["hit"] = game_board.player.ships[i].get_hits()
             data["player"]["ships"][f"ship{i}"]["cooldown"] = game_board.player.ships[i].get_cooldown()
-            data["player"]["ships"][f"ship{i}"]["ablitity_available"] = game_board.player.ships[i].ability_available()
+            data["player"]["ships"][f"ship{i}"]["ability_available"] = game_board.player.ships[i].ability_available()
             data["player"]["ships"][f"ship{i}"]["type"] = game_board.player.ships[i].__name__()
 
         data["player_ai"] = {}
@@ -78,10 +163,11 @@ class Database:
             data["player_ai"]["ships"][f"ship{i}"]["y"] = game_board.player_ai.ships[i].get_position().y
             data["player_ai"]["ships"][f"ship{i}"]["horizontal"] = game_board.player_ai.ships[i].get_position(
             ).horizontal
+            data["player_ai"]["ships"][f"ship{i}"]["size"] = game_board.player_ai.ships[i].get_size()
 
             data["player_ai"]["ships"][f"ship{i}"]["hit"] = game_board.player_ai.ships[i].get_hits()
             data["player_ai"]["ships"][f"ship{i}"]["cooldown"] = game_board.player_ai.ships[i].get_cooldown()
-            data["player_ai"]["ships"][f"ship{i}"]["ablitity_available"] = game_board.player_ai.ships[i].ability_available(
+            data["player_ai"]["ships"][f"ship{i}"]["ability_available"] = game_board.player_ai.ships[i].ability_available(
             )
             data["player_ai"]["ships"][f"ship{i}"]["type"] = game_board.player.ships[i].__name__()
 

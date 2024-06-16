@@ -43,6 +43,9 @@ class BaseShip:
     def set_hit(self, index: int):
         self.__hits[index] = True
 
+    def set_hits(self, hit_list: [int]):
+        self.__hits = hit_list
+
     def get_cooldown(self):
         return self.__cooldown
 
@@ -51,6 +54,9 @@ class BaseShip:
 
     def ability_available(self):
         return self.__ability
+
+    def set_ability_available(self, value: bool):
+        self.__ability = value
 
     def action(self):
         pass

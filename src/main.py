@@ -2,9 +2,10 @@ import pygame
 import sys
 
 # from ships import BaseShip
-from GameBoard import GameBoard
+# from GameBoard import GameBoard
 from Menu import Menu
-
+from Database import Database, GameBoard
+from functools import partial
 # Initialize Pygame
 pygame.init()
 SCREEN_HEIGHT = 1000
@@ -13,6 +14,8 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # screen = ScreenWrapper(SCREEN_WIDTH, SCREEN_HEIGHT)
 game_board = GameBoard(screen, 10, 10)
 
+previous_games_list = []
+
 
 def game_start():
     print("Start Game!")
@@ -20,7 +23,22 @@ def game_start():
     game_board.run()
 
 
+database = Database()
+
+
+def preview_game(game_file_name: str):
+    print("preview_game()", game_file_name)
+    game_board = database.create_gameboard_from_file(screen, game_file_name)
+    game_board.run()
+
+
 def see_previous_games():
+    previous_games_list = database.retrieve_stored_games()
+    menu_list = []
+    for i in range(len(previous_games_list)):
+        menu_list.append((previous_games_list[i], partial(preview_game, previous_games_list[i])))
+    previous_games_menu = Menu(screen, menu_list)
+    previous_games_menu.run()
     print("WIP")
 
 
