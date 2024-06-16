@@ -7,6 +7,7 @@ import Database
 from Defines import colors
 from enum import Enum
 
+from Visitor import Visitor
 
 class states(Enum):
     INIT = 0
@@ -163,6 +164,8 @@ class GameBoard:
                 elif event.type == pygame.KEYDOWN:
                     # print(f"Key {pygame.key.name(event.key)} was pressed")
                     return event.key  # Return the key that was pressed
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    return event
 
     def check_for_ability_button_press(self, event) -> int:
         for i, rect in enumerate(self.buttons):
@@ -176,6 +179,8 @@ class GameBoard:
         self.database = Database.Database()
         self.database.start_new_game()
         self.database.write_gameboard(self)
+
+        vis: Visitor = Visitor()
 
         running = True
         self.state = states.INIT
@@ -227,13 +232,14 @@ class GameBoard:
                                             if pressed_key == pygame.K_RIGHT:
                                                 self.player.move_ship(player_grid_click, 0, 1)
                                     # _____________________________________________________________
-                                        self.state = states.ABILITY
+                                            self.state = states.ABILITY
                             case states.ABILITY:
 
                                 idx = self.check_for_ability_button_press(event)
                                 print(idx)
                                 if idx is not None:
-                                    
+                                    ev = self.wait_for_keypress()
+                                    vis.do(self.player.ships[idx], self.player, self.player_ai, Pos(ev.pos[0], ev.pos[1]))
 
                                     self.state = states.ATTACK
                                     playing_ai = True
