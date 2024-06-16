@@ -1,5 +1,6 @@
 from datatypes import Position as Pos
 from Player import Player
+from Defines import colors
 import random
 
 class AI:
@@ -7,14 +8,6 @@ class AI:
     __cols: int
 
     __huntmode: bool = False
-
-    # Copied from player class
-    __HIT_COLOR = (255, 0, 0)
-    __SHOT_COLOR = (0, 255, 255)
-    __SHIP_COLOR = (255, 255, 255)
-    __VISIBLE_COLOR = (128, 128, 192)
-    __GRID_COLOR = (48, 69, 77)
-    __UNK_SHIP_COLOR = (128, 69, 128)
 
     def __init__(self, rows, cols) -> None:
         self.__rows = rows
@@ -24,10 +17,7 @@ class AI:
         self.grid_shot: bool = []
 
     def push_target(self, pos: Pos):
-        # for e, _ in enumerate(self.targets):
-        #     if pos == e:
-        #         return 0
-        
+        print(pos)
         if pos in self.targets or self.grid_shot[pos.x][pos.y]:
             return 0
 
@@ -37,16 +27,16 @@ class AI:
     def find_surrounding_positions(self, x, y):
         count = 0
         if x > 0:
-            self.grid_shot[x-1][y]
+            # self.grid_shot[x-1][y]
             count += self.push_target(Pos(x-1,y))
-        if x < self.__rows:
-            self.grid_shot[x+1][y]
+        if x < self.__rows-1:
+            # self.grid_shot[x+1][y]
             count += self.push_target(Pos(x+1,y))
         if y > 0:
-            self.grid_shot[x][y-1]
+            # self.grid_shot[x][y-1]
             count += self.push_target(Pos(x,y-1))
-        if y < self.__cols:
-            self.grid_shot[x][y+1]
+        if y < self.__cols-1:
+            # self.grid_shot[x][y+1]
             count += self.push_target(Pos(x,y+1))
 
         print(count, " targets count: ", len(self.targets))
