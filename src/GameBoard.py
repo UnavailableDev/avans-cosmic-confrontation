@@ -209,6 +209,7 @@ class GameBoard:
                         self.input_movement(player_grid_click)
 
                     if ai_grid_click:  # Start game
+                        self.player_ai.new_rand_ship_layout()
                         self.state = states.ATTACK
                 case states.ATTACK:
                     if ai_grid_click is not None:

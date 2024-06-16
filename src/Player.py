@@ -63,6 +63,12 @@ class Player:
 
         # Invalid, position was already hit
         return False
+    
+    def new_rand_ship_layout(self):
+        for i in range(len(self.ships)):
+            self.ships[i].set_position(Pos(0 + self.cols, i, True))
+
+        self.rand_ship_layout()
 
     def rand_ship_layout(self):
         for i in range(len(self.ships)):
@@ -171,8 +177,6 @@ class Player:
             potential_moved_ship.set_position(previous_ship_pos)
 
         return True
-
-    # TODO add True return if movement got accepted
 
     def move_ship(self, pos: Pos, vertical: int, horizontal: int) -> bool:
         potential_moved_ship = self.get_grid_ship(pos)
