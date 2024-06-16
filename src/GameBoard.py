@@ -247,6 +247,10 @@ class GameBoard:
 
                                     self.state = states.ATTACK
                                     self.playing_ai = True
+                    else:
+                        self.state = states.ATTACK
+                        self.playing_ai = True
+
                 case _:  # error / default case
                     pass
 

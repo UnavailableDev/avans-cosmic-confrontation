@@ -19,9 +19,11 @@ class AI:
     def push_target(self, pos: Pos, player: Player):
         if pos in self.targets:
             return 0
-        if not player.get_ship_shot(player.get_grid_ship(pos)):
-            self.targets.append(pos)
-            return 1
+        ship = player.get_grid_ship(pos)
+        if ship:
+            if not player.get_ship_shot(ship, pos):
+                self.targets.append(pos)
+                return 1
         
         if self.grid_shot[pos.x][pos.y]:
             return 0
