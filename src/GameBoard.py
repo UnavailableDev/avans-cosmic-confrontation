@@ -3,8 +3,9 @@ from ships import BaseShip, BattleShip, ScoutShip
 from datatypes import Position as Pos
 from Player import Player
 from AI import AI
-
+import Database
 from enum import Enum
+
 
 class states(Enum):
     INIT = 0
@@ -50,8 +51,8 @@ class GameBoard:
         self.cols = cols
         self.rows = rows
 
-        self.player = Player(rows, cols)
-        self.player_ai = Player(rows, cols)
+        self.player = Player(Pos(rows, cols))
+        self.player_ai = Player(Pos(rows, cols))
 
         self.AI = AI(rows, cols)
 
@@ -137,6 +138,11 @@ class GameBoard:
                     return event.key  # Return the key that was pressed
 
     def run(self):
+        self.database = Database.Database()
+        self.database.start_new_game()
+        self.database.write_gameboard(self)
+        self.database.retrieve_stored_games()
+
         running = True
         # TODO INIT State
         state: states = states.INIT
@@ -149,8 +155,9 @@ class GameBoard:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     ai_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]))
                     player_grid_click = self.click_local_grid(Pos(event.pos[0], event.pos[1]), Pos(0, self.cols + 1))
-                    
+
                     print(state)
+                    self.database.write_gameboard(self)
 
                     if not playing_ai:
                         match state:
@@ -169,28 +176,25 @@ class GameBoard:
 
                                         state = states.ATTACK
                             case states.MOVE:
-                                if player_grid_click : 
-                                # # _____________ for moving ships # TODO: intergrate with eventual statemachine
-                                #     if self.player.get_grid_ship(player_grid_click):
-                                #         pressed_key = self.wait_for_keypress()
-                                #         move_ok = False
-                                #         if pressed_key == pygame.K_DOWN:
-                                #             move_ok = self.player.move_ship(player_grid_click, 1, 0)
-                                #         if pressed_key == pygame.K_UP:
-                                #             move_ok = self.player.move_ship(player_grid_click, -1, 0)
-                                #         if pressed_key == pygame.K_LEFT:
-                                #             move_ok = self.player.move_ship(player_grid_click, 0, -1)
-                                #         if pressed_key == pygame.K_RIGHT:
-                                #             move_ok = self.player.move_ship(player_grid_click, 0, 1)
-                                # # _____________________________________________________________
-                                    print(self.input_movement(player_grid_click))
-                                    # if self.input_movement(player_grid_click):
-                                    state = states.ABILITY
+                                if player_grid_click:
+                                    # _____________ for moving ships # TODO: intergrate with eventual statemachine
+                                    if self.player.get_grid_ship(player_grid_click):
+                                        pressed_key = self.wait_for_keypress()
+                                        if pressed_key == pygame.K_DOWN:
+                                            self.player.move_ship(player_grid_click, 1, 0)
+                                        if pressed_key == pygame.K_UP:
+                                            self.player.move_ship(player_grid_click, -1, 0)
+                                        if pressed_key == pygame.K_LEFT:
+                                            self.player.move_ship(player_grid_click, 0, -1)
+                                        if pressed_key == pygame.K_RIGHT:
+                                            self.player.move_ship(player_grid_click, 0, 1)
+                                # _____________________________________________________________
+                                        state = states.ABILITY
                             case states.ABILITY:
 
                                 state = states.ATTACK
                                 playing_ai = True
-                            case _: # error / default case
+                            case _:  # error / default case
                                 pass
 
             # call AI logic

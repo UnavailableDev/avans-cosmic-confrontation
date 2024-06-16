@@ -8,11 +8,13 @@ class Player:
     rows = 0
     cols = 0
 
-    def __init__(self, rows, cols) -> None:
+    def __init__(self, size: Pos) -> None:
+        self.nickname = "undefined nickname"
+
         self.ships: BaseShip = []
         self.shots: bool = []
-        self.rows = rows
-        self.cols = cols
+        self.rows = size.x
+        self.cols = size.y
         for i in range(self.rows):
             inner_array = []
             for j in range(self.cols):
@@ -41,7 +43,7 @@ class Player:
         self.rand_ship_layout()
 
 
-    def shoot_ships(self, pos:Pos):
+    def shoot_ships(self, pos: Pos):
         ship: BaseShip = self.get_grid_ship(pos)
         if ship:
             index: int
@@ -59,7 +61,7 @@ class Player:
             self.shots[pos.x][pos.y] = True
             self.shoot_ships(pos)
             return True
-        
+
         # Invalid, position was already hit
         return False
 
@@ -225,3 +227,10 @@ class Player:
                     color = colors.HIT.value
 
         return color
+
+    def set_nickname(self, new_nickname: str) -> None:
+        self.nickname = new_nickname
+        return
+
+    def get_nickname(self) -> str:
+        return self.nickname
