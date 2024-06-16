@@ -1,5 +1,5 @@
 import pygame
-from ships import BaseShip, BattleShip, ScoutShip
+from ships import *
 from datatypes import Position as Pos
 from Player import Player
 from AI import AI
@@ -7,6 +7,7 @@ import Database
 from Defines import colors
 from enum import Enum
 
+from Visitor import Visitor
 
 class states(Enum):
     INIT = 0
@@ -163,6 +164,8 @@ class GameBoard:
                 elif event.type == pygame.KEYDOWN:
                     print(f"Key {pygame.key.name(event.key)} was pressed")
                     return event.key  # Return the key that was pressed
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    return event.pos
 
     def check_ship_button(self, event) -> int:
         for i, rect in enumerate(self.buttons):
@@ -233,11 +236,23 @@ class GameBoard:
                                 if pressed_key == pygame.K_RIGHT:
                                     self.player.move_ship(player_grid_click, 0, 1)
                         # _____________________________________________________________
-                            self.state = states.ABILITY
+                                self.state = states.ABILITY
                 case states.ABILITY:
+                    vis: Visitor = Visitor()
+                    idx = self.check_ship_button(event)
+                    if idx is not None:
+                        pos = None
+                        ev = self.wait_for_keypress()
+                        if not isinstance(ev, int): # Verify that the type is not a key pressed
+                            if isinstance(self.player.ships[idx], CommandShip):
+                                pos = self.click_local_grid(Pos(ev[0], ev[1]), Pos(0, self.cols + 1))
+                            else:
+                                pos = self.click_local_grid(Pos(ev[0], ev[1]))
+                            if pos:
+                                if vis.do(self.player.ships[idx], self.player, self.player_ai, pos):
 
-                    self.state = states.ATTACK
-                    self.playing_ai = True
+                                    self.state = states.ATTACK
+                                    self.playing_ai = True
                 case _:  # error / default case
                     pass
 
@@ -327,3 +342,4 @@ class GameBoard:
 
         while self.running:
             self.gameloop()
+
