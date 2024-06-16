@@ -164,7 +164,7 @@ class GameBoard:
                     # print(f"Key {pygame.key.name(event.key)} was pressed")
                     return event.key  # Return the key that was pressed
 
-    def check_for_ability_button_press(self, event) -> int:
+    def check_ship_button(self, event) -> int:
         for i, rect in enumerate(self.buttons):
             if rect.collidepoint(event.pos):
                 # Call the associated function
@@ -195,7 +195,7 @@ class GameBoard:
                     if not playing_ai:
                         match self.state:
                             case states.INIT:
-                                resulting = self.check_for_ability_button_press(event)  # TEST
+                                resulting = self.check_ship_button(event)  # TEST
                                 if resulting is not None:  # TEST
                                     print(resulting)  # TEST
                                 if player_grid_click:
