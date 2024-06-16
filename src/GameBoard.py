@@ -87,7 +87,7 @@ class GameBoard:
                 pass
             else:
                 player_alive = True
-        
+
         for ship in self.player_ai.ships:
             ship: BaseShip = ship
             if sum(ship.get_hits()) == ship.get_size():
@@ -114,7 +114,7 @@ class GameBoard:
                 return Pos((pos.x//cell_width), (pos.y//cell_height))
 
         return None
-    
+
     def input_movement(self, player_grid_click: Pos):
         if self.player.get_grid_ship(player_grid_click):
             pressed_key = self.wait_for_keypress()
@@ -141,7 +141,6 @@ class GameBoard:
         self.database = Database.Database()
         self.database.start_new_game()
         self.database.write_gameboard(self)
-        self.database.retrieve_stored_games()
 
         running = True
         # TODO INIT State
@@ -162,10 +161,10 @@ class GameBoard:
                     if not playing_ai:
                         match state:
                             case states.INIT:
-                                if player_grid_click: 
+                                if player_grid_click:
                                     self.input_movement(player_grid_click)
-                                
-                                if ai_grid_click: # Start game
+
+                                if ai_grid_click:  # Start game
                                     state = states.ATTACK
                             case states.ATTACK:
                                 if ai_grid_click is not None:

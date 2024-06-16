@@ -30,7 +30,7 @@ database = Database()
 
 
 def preview_game(game_file_name: str):
-    print("preview_game()", game_file_name)
+    # print("preview_game()", game_file_name)
     game_board = database.create_gameboard_from_file(screen, game_file_name)
     game_board.run()
 

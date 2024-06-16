@@ -1,0 +1,488 @@
+{
+    "move-1": {
+        "player": {
+            "nickname": "undefined nickname",
+            "shots": [
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            ],
+            "ships": {
+                "AmountOfShips": 8,
+                "ship0": {
+                    "x": 3,
+                    "y": 4,
+                    "horizontal": false,
+                    "size": 2,
+                    "hit": [
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "ScoutShip"
+                },
+                "ship1": {
+                    "x": 6,
+                    "y": 3,
+                    "horizontal": true,
+                    "size": 2,
+                    "hit": [
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "ScoutShip"
+                },
+                "ship2": {
+                    "x": 1,
+                    "y": 1,
+                    "horizontal": true,
+                    "size": 3,
+                    "hit": [
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "HunterShip"
+                },
+                "ship3": {
+                    "x": 0,
+                    "y": 9,
+                    "horizontal": true,
+                    "size": 3,
+                    "hit": [
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "HunterShip"
+                },
+                "ship4": {
+                    "x": 0,
+                    "y": 6,
+                    "horizontal": false,
+                    "size": 3,
+                    "hit": [
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "CruiserShip"
+                },
+                "ship5": {
+                    "x": 6,
+                    "y": 5,
+                    "horizontal": false,
+                    "size": 3,
+                    "hit": [
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "CruiserShip"
+                },
+                "ship6": {
+                    "x": 8,
+                    "y": 0,
+                    "horizontal": false,
+                    "size": 4,
+                    "hit": [
+                        false,
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "BattleShip"
+                },
+                "ship7": {
+                    "x": 0,
+                    "y": 3,
+                    "horizontal": true,
+                    "size": 5,
+                    "hit": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "CommandShip"
+                }
+            }
+        },
+        "player_ai": {
+            "nickname": "undefined nickname",
+            "shots": [
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            ],
+            "ships": {
+                "AmountOfShips": 8,
+                "ship0": {
+                    "x": 7,
+                    "y": 6,
+                    "horizontal": false,
+                    "size": 2,
+                    "hit": [
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "ScoutShip"
+                },
+                "ship1": {
+                    "x": 7,
+                    "y": 8,
+                    "horizontal": true,
+                    "size": 2,
+                    "hit": [
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "ScoutShip"
+                },
+                "ship2": {
+                    "x": 7,
+                    "y": 1,
+                    "horizontal": false,
+                    "size": 3,
+                    "hit": [
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "HunterShip"
+                },
+                "ship3": {
+                    "x": 2,
+                    "y": 5,
+                    "horizontal": false,
+                    "size": 3,
+                    "hit": [
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "HunterShip"
+                },
+                "ship4": {
+                    "x": 3,
+                    "y": 1,
+                    "horizontal": true,
+                    "size": 3,
+                    "hit": [
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "CruiserShip"
+                },
+                "ship5": {
+                    "x": 1,
+                    "y": 4,
+                    "horizontal": false,
+                    "size": 3,
+                    "hit": [
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "CruiserShip"
+                },
+                "ship6": {
+                    "x": 1,
+                    "y": 0,
+                    "horizontal": true,
+                    "size": 4,
+                    "hit": [
+                        false,
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "BattleShip"
+                },
+                "ship7": {
+                    "x": 2,
+                    "y": 4,
+                    "horizontal": true,
+                    "size": 5,
+                    "hit": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ],
+                    "cooldown": 0,
+                    "ability_available": true,
+                    "type": "CommandShip"
+                }
+            }
+        }
+    },
+    "game_move_count": 1,
+    "board_size": 10
+}

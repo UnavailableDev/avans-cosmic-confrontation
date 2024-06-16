@@ -92,8 +92,8 @@ class Database:
 
             new_gameboard.player_ai.ships.append(ship)
 
-        for i in range(len(new_gameboard.player_ai.ships)):
-            print(new_gameboard.player_ai.ships[i].__name__())
+        # for i in range(len(new_gameboard.player_ai.ships)):
+        #     print(new_gameboard.player_ai.ships[i].__name__())
 
         return new_gameboard
 
@@ -177,7 +177,7 @@ class Database:
         with open(self.file_path, 'r') as json_file:
             loaded_data = json.load(json_file)
 
-        print(loaded_data)
+        # print(loaded_data)
 
         self.game_move_count += 1
         return
