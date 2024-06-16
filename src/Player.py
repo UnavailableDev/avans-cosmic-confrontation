@@ -70,7 +70,7 @@ class Player:
 
                 self.ships[i].set_position(Pos(self.rows, self.cols))
 
-            print(i, self.ships[i].get_position())
+            # print(i, self.ships[i].get_position())
     
     def new_ship_pos(self, idx: int):
         size = self.ships[idx].get_size()
@@ -92,7 +92,6 @@ class Player:
             print("NANI Y", rand_y)
             return False
 
-        print(size, Pos(rand_x, rand_y, hor))
         self.ships[idx].set_position(Pos(rand_x, rand_y, hor))
         if self.ships_colliding():
             self.ships[idx].set_position(Pos(self.rows, self.cols))

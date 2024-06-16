@@ -17,7 +17,6 @@ class AI:
         self.grid_shot: bool = []
 
     def push_target(self, pos: Pos):
-        print(pos)
         if pos in self.targets or self.grid_shot[pos.x][pos.y]:
             return 0
 
@@ -39,7 +38,7 @@ class AI:
             # self.grid_shot[x][y+1]
             count += self.push_target(Pos(x,y+1))
 
-        print(count, " targets count: ", len(self.targets))
+        # print(count, " targets count: ", len(self.targets))
 
     def update(self, player: Player):
         if self.grid_shot == player.shots:
@@ -56,7 +55,7 @@ class AI:
                     if player.get_grid_ship(Pos(x,y)): # HIT
                         li = self.find_surrounding_positions(x, y)
 
-        print("total shots ", tot)
+        # print("total shots ", tot)
     
     def shoot(self):
         if len(self.targets) > 0: # Hunt mode
