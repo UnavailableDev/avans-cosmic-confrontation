@@ -1,5 +1,5 @@
 import pygame
-from ships import BaseShip, BattleShip, ScoutShip
+from ships import BaseShip
 from datatypes import Position as Pos
 from Player import Player
 from AI import AI
@@ -208,9 +208,9 @@ class GameBoard:
                                     if self.player_ai.shoot_grid(ai_grid_click):
                                         # TODO this is disabled for testing purousses
                                         # pass
-                                        playing_ai = True
+                                        # playing_ai = True
 
-                                        self.state = states.ATTACK
+                                        self.state = states.MOVE
                             case states.MOVE:
                                 if player_grid_click:
                                     # _____________ for moving ships # TODO: intergrate with eventual statemachine
@@ -230,8 +230,13 @@ class GameBoard:
                                         self.state = states.ABILITY
                             case states.ABILITY:
 
-                                self.state = states.ATTACK
-                                playing_ai = True
+                                idx = self.check_for_ability_button_press(event)
+                                print(idx)
+                                if idx is not None:
+                                    
+
+                                    self.state = states.ATTACK
+                                    playing_ai = True
                             case _:  # error / default case
                                 pass
 
