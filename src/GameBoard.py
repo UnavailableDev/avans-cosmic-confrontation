@@ -195,9 +195,9 @@ class GameBoard:
 
             # call AI logic
             if playing_ai:
-                
                 self.AI.update(self.player)
-                self.player.shoot_grid(self.AI.shoot())
+                while not self.player.shoot_grid(self.AI.shoot()):
+                    pass
                 playing_ai = False
 
             # Fill the background

@@ -59,7 +59,8 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 - [ ] Dynamic board size between 8-16 (always a square shape)
 - [ ] Make abilities
 - [~] Make AI @Joshua
-- [ ] Init state where the player (and AI) place their ships on the grid
+- [x] Init state where the player (and AI) place their ships on the grid
+- [x] fix AI wasting a turn?
 
 
 ## Feature request:
