@@ -99,7 +99,7 @@ class GameBoard:
             else:
                 if self.player.ships[i].is_alive():
                     color = colors.SHIP.value 
-                    if self.player.ships[i].ability_available():
+                    if self.player.ships[i].ability_available() and self.player.ships[i].get_cooldown() == 0:
                         if button.collidepoint(pygame.mouse.get_pos()):
                             color = colors.SHOT.value 
                     else:
@@ -206,17 +206,19 @@ class GameBoard:
                             case states.MOVE:
                                 if player_grid_click:
                                     # _____________ for moving ships # TODO: intergrate with eventual statemachine
-                                    if self.player.get_grid_ship(player_grid_click):
-                                        pressed_key = self.wait_for_keypress()
-                                        if pressed_key == pygame.K_DOWN:
-                                            self.player.move_ship(player_grid_click, 1, 0)
-                                        if pressed_key == pygame.K_UP:
-                                            self.player.move_ship(player_grid_click, -1, 0)
-                                        if pressed_key == pygame.K_LEFT:
-                                            self.player.move_ship(player_grid_click, 0, -1)
-                                        if pressed_key == pygame.K_RIGHT:
-                                            self.player.move_ship(player_grid_click, 0, 1)
-                                # _____________________________________________________________
+                                    ship: BaseShip = self.player.get_grid_ship(player_grid_click)
+                                    if ship:
+                                        if ship.get_cooldown() == 0:
+                                            pressed_key = self.wait_for_keypress()
+                                            if pressed_key == pygame.K_DOWN:
+                                                self.player.move_ship(player_grid_click, 1, 0)
+                                            if pressed_key == pygame.K_UP:
+                                                self.player.move_ship(player_grid_click, -1, 0)
+                                            if pressed_key == pygame.K_LEFT:
+                                                self.player.move_ship(player_grid_click, 0, -1)
+                                            if pressed_key == pygame.K_RIGHT:
+                                                self.player.move_ship(player_grid_click, 0, 1)
+                                    # _____________________________________________________________
                                         self.state = states.ABILITY
                             case states.ABILITY:
 
@@ -230,7 +232,12 @@ class GameBoard:
                 self.AI.update(self.player)
                 while not self.player.shoot_grid(self.AI.shoot()):
                     pass
+
+                # End of Both player's turn
                 playing_ai = False
+                for i in range(len(self.player.ships)):
+                    self.player.ships[i].reduce_cooldown()
+                    self.player_ai.ships[i].reduce_cooldown()
 
             # Fill the background
             self.screen.fill(colors.BACKGROUND.value)

@@ -54,6 +54,10 @@ class BaseShip:
 
     def set_cooldown(self, cooldown: int):
         self.__cooldown = cooldown
+    
+    def reduce_cooldown(self):
+        if self.__cooldown > 0:
+            self.__cooldown -= 1
 
     def ability_available(self):
         return self.__ability
@@ -73,6 +77,8 @@ class ScoutShip(BaseShip):
         super().__init__(size=2)
 
     def action(self):
+        # Radar scan
+        # clear a 3x3 area
         pass
 
     def __name__(self) -> str:
@@ -84,6 +90,8 @@ class HunterShip(BaseShip):
         super().__init__(size=3)
 
     def action(self):
+        # Homing missile
+        # Hit the nearest ship
         pass
 
     def __name__(self) -> str:
@@ -95,6 +103,8 @@ class CruiserShip(BaseShip):
         super().__init__(size=3)
 
     def action(self):
+        # EMP
+        # Cooldown ship
         pass
 
     def __name__(self) -> str:
@@ -106,6 +116,7 @@ class BattleShip(BaseShip):
         super().__init__(size=4)
 
     def action(self):
+        # Shoot 3 connection grid points (horizontal or vertical)
         pass
 
     def __name__(self) -> str:
@@ -117,6 +128,8 @@ class CommandShip(BaseShip):
         super().__init__(size=5)
 
     def action(self):
+        # Space smoke
+        # Hide a 3x3 area
         pass
 
     def __name__(self) -> str:
