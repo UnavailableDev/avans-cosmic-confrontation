@@ -6,11 +6,13 @@ import os
 from ships import BaseShip, ScoutShip, HunterShip, BattleShip, CommandShip, CruiserShip, Pos
 
 
+# class used to manage the database and storage of data in json files specific to the GameBoard class
 class Database:
     def __init__(self):
         self.game_move_count = 0
         pass
 
+    # returns a list of available json files
     def retrieve_stored_games(self) -> list[str]:
         directory_path = 'database'  # Replace with your directory path
 
@@ -23,6 +25,7 @@ class Database:
         #     print(file_name)
         return file_names
 
+    # creates a gameboard class from given file
     def create_gameboard_from_file(self, screen, data_file_name: str) -> GameBoard:
         with open(f"database/{data_file_name}", 'r') as json_file:
             loaded_data = json.load(json_file)
@@ -99,6 +102,7 @@ class Database:
 
 # from ships import BaseShip, ScoutShip, HunterShip, BattleShip, CommandShip, CruiserShip, Pos
 
+    # initialises the Database class for a new game
     def start_new_game(self) -> None:
         # Get the current date and time
         current_datetime = datetime.now()
@@ -111,6 +115,7 @@ class Database:
         #     pass
         return
 
+    # write the state of the gameboard to the current json file
     def write_gameboard(self, game_board: GameBoard) -> None:
         # Initialize an empty dictionary
         if self.game_move_count == 0:
