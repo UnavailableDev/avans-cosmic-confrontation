@@ -165,7 +165,9 @@ class Player:
 
         potential_moved_ship.set_position(ship_pos)
 
-        if not self.ships_colliding():
+        b = self.ships_colliding()
+        print(b)
+        if b:
             potential_moved_ship.set_position(previous_ship_pos)
 
         return True

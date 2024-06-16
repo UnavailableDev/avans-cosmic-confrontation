@@ -1,5 +1,5 @@
 import pygame
-from ships import BaseShip
+from ships import *
 from datatypes import Position as Pos
 from Player import Player
 from AI import AI
@@ -238,11 +238,17 @@ class GameBoard:
                                 idx = self.check_for_ability_button_press(event)
                                 print(idx)
                                 if idx is not None:
+                                    pos = None
                                     ev = self.wait_for_keypress()
-                                    vis.do(self.player.ships[idx], self.player, self.player_ai, Pos(ev.pos[0], ev.pos[1]))
+                                    if isinstance(self.player.ships[idx], CommandShip):
+                                        pos = self.click_local_grid(Pos(ev.pos[0], ev.pos[1]), Pos(0, self.cols + 1))
+                                    else:
+                                        pos = self.click_local_grid(Pos(ev.pos[0], ev.pos[1]))
+                                    
+                                    if vis.do(self.player.ships[idx], self.player, self.player_ai, pos):
 
-                                    self.state = states.ATTACK
-                                    playing_ai = True
+                                        self.state = states.ATTACK
+                                        playing_ai = True
                             case _:  # error / default case
                                 pass
 
