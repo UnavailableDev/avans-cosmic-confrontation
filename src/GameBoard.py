@@ -83,14 +83,14 @@ class GameBoard:
         player_ai_alive: bool = False
         for ship in self.player.ships:
             ship: BaseShip = ship
-            if sum(ship.get_hits()) == ship.get_size():
+            if ship.is_alive():
                 pass
             else:
                 player_alive = True
         
         for ship in self.player_ai.ships:
             ship: BaseShip = ship
-            if sum(ship.get_hits()) == ship.get_size():
+            if ship.is_alive():
                 pass
             else:
                 player_ai_alive = True

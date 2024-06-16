@@ -46,6 +46,9 @@ class BaseShip:
     def set_hits(self, hit_list: [int]):
         self.__hits = hit_list
 
+    def is_alive(self):
+        return not (sum(self.__hits) == self.__size)
+
     def get_cooldown(self):
         return self.__cooldown
 
