@@ -191,25 +191,21 @@ class Player:
                     return self.ships[i]
         return None
 
+    def get_ship_shot(self, ship: BaseShip, pos: Pos):
+        ship_pos = ship.get_position()
+        hits = ship.get_hits()
+        
+        if ship_pos.horizontal:
+            return hits[pos.x - ship_pos.x]
+        else:
+            return hits[pos.y - ship_pos.y]
+
     def get_grid_shot(self, pos: Pos):
         return self.shots[pos.x][pos.y]
 
     def get_grid_color(self, pos: Pos, enemy=False):
         color = colors.GRID.value
-        if enemy:
-            pass
-            # if self.get_grid_shot(pos):
-            #     color = colors.VISIBLE.value
-            
-            #     # see if there is a ship
-            #     if self.get_grid_ship(pos):
-            #         color = colors.UNK_SHIP.value
-
-            #         # see if the ship is hit in that position
-            #         if None:
-            #             color = colors.HIT.value          
-        else:
-            # see if there is a ship
+        if not enemy:
             if self.get_grid_ship(pos):
                 color = colors.SHIP.value
 
@@ -219,14 +215,18 @@ class Player:
             else:
                 color = colors.SHOT.value
             
-            if self.get_grid_ship(pos):
+            ship = self.get_grid_ship(pos)
+            if ship != None:
                 if enemy:
                     color = colors.UNK_SHIP.value
                     # see if the ship is hit in that position
-                    if None:
+                    if self.get_ship_shot(ship, pos):
                         color = colors.HIT.value 
                 else:
-                    color = colors.HIT.value
+                    color = colors.UNK_SHIP.value
+
+                    # if self.get_ship_shot(ship, pos):
+                    #     color = colors.HIT.value
 
         return color
 

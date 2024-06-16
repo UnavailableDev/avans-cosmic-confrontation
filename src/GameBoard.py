@@ -165,7 +165,7 @@ class GameBoard:
                     # print(f"Key {pygame.key.name(event.key)} was pressed")
                     return event.key  # Return the key that was pressed
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    return event
+                    return event.pos
 
     def check_for_ability_button_press(self, event) -> int:
         for i, rect in enumerate(self.buttons):
@@ -236,19 +236,19 @@ class GameBoard:
                             case states.ABILITY:
 
                                 idx = self.check_for_ability_button_press(event)
-                                print(idx)
                                 if idx is not None:
                                     pos = None
                                     ev = self.wait_for_keypress()
-                                    if isinstance(self.player.ships[idx], CommandShip):
-                                        pos = self.click_local_grid(Pos(ev.pos[0], ev.pos[1]), Pos(0, self.cols + 1))
-                                    else:
-                                        pos = self.click_local_grid(Pos(ev.pos[0], ev.pos[1]))
-                                    
-                                    if vis.do(self.player.ships[idx], self.player, self.player_ai, pos):
+                                    if not isinstance(ev, int):
+                                        if isinstance(self.player.ships[idx], CommandShip):
+                                            pos = self.click_local_grid(Pos(ev[0], ev[1]), Pos(0, self.cols + 1))
+                                        else:
+                                            pos = self.click_local_grid(Pos(ev[0], ev[1]))
+                                        if pos:
+                                            if vis.do(self.player.ships[idx], self.player, self.player_ai, pos):
 
-                                        self.state = states.ATTACK
-                                        playing_ai = True
+                                                self.state = states.ATTACK
+                                                playing_ai = True
                             case _:  # error / default case
                                 pass
 
