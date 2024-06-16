@@ -46,11 +46,18 @@ class BaseShip:
     def set_hits(self, hit_list: [int]):
         self.__hits = hit_list
 
+    def is_alive(self):
+        return not (sum(self.__hits) == self.__size)
+
     def get_cooldown(self):
         return self.__cooldown
 
     def set_cooldown(self, cooldown: int):
         self.__cooldown = cooldown
+    
+    def reduce_cooldown(self):
+        if self.__cooldown > 0:
+            self.__cooldown -= 1
 
     def ability_available(self):
         return self.__ability
@@ -59,7 +66,7 @@ class BaseShip:
         self.__ability = value
 
     def action(self):
-        pass
+        return self.__cooldown > 0
 
     def __name__(self) -> str:
         return "BaseShip"
@@ -70,7 +77,10 @@ class ScoutShip(BaseShip):
         super().__init__(size=2)
 
     def action(self):
-        pass
+        # Radar scan
+        # clear a 3x3 area
+        if super().action():
+            pass
 
     def __name__(self) -> str:
         return "ScoutShip"
@@ -81,7 +91,10 @@ class HunterShip(BaseShip):
         super().__init__(size=3)
 
     def action(self):
-        pass
+        # Homing missile
+        # Hit the nearest ship
+        if super().action():
+            pass
 
     def __name__(self) -> str:
         return "HunterShip"
@@ -92,7 +105,10 @@ class CruiserShip(BaseShip):
         super().__init__(size=3)
 
     def action(self):
-        pass
+        # EMP
+        # Cooldown ship
+        if super().action():
+            pass
 
     def __name__(self) -> str:
         return "CruiserShip"
@@ -103,7 +119,9 @@ class BattleShip(BaseShip):
         super().__init__(size=4)
 
     def action(self):
-        pass
+        # Shoot 3 connection grid points (horizontal or vertical)
+        if super().action():
+            pass
 
     def __name__(self) -> str:
         return "BattleShip"
@@ -114,7 +132,10 @@ class CommandShip(BaseShip):
         super().__init__(size=5)
 
     def action(self):
-        pass
+        # Space smoke
+        # Hide a 3x3 area
+        if super().action():
+            pass
 
     def __name__(self) -> str:
         return "CommandShip"
