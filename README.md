@@ -61,6 +61,7 @@ python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroo
 - [~] Make AI @Joshua
 - [x] Init state where the player (and AI) place their ships on the grid
 - [x] fix AI wasting a turn?
+- [ ] ability for player to place their own ships
 
 
 ## Feature request:
