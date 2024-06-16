@@ -16,27 +16,35 @@ class AI:
         self.targets: Pos = []
         self.grid_shot: bool = []
 
-    def push_target(self, pos: Pos):
-        if pos in self.targets or self.grid_shot[pos.x][pos.y]:
+    def push_target(self, pos: Pos, player: Player):
+        if pos in self.targets:
             return 0
-
+        if not player.get_ship_shot(player.get_grid_ship(pos)):
+            self.targets.append(pos)
+            return 1
+        
+        if self.grid_shot[pos.x][pos.y]:
+            return 0
         self.targets.append(pos)
         return 1
 
-    def find_surrounding_positions(self, x, y):
+    def find_surrounding_positions(self, x, y, player: Player):
         count = 0
         if x > 0:
             # self.grid_shot[x-1][y]
-            count += self.push_target(Pos(x-1,y))
+            count += self.push_target(Pos(x-1,y), player)
         if x < self.__rows-1:
             # self.grid_shot[x+1][y]
-            count += self.push_target(Pos(x+1,y))
+            count += self.push_target(Pos(x+1,y), player)
         if y > 0:
             # self.grid_shot[x][y-1]
-            count += self.push_target(Pos(x,y-1))
+            count += self.push_target(Pos(x,y-1), player)
         if y < self.__cols-1:
             # self.grid_shot[x][y+1]
-            count += self.push_target(Pos(x,y+1))
+            count += self.push_target(Pos(x,y+1), player)
+
+        # Add center grid in case ship moved into tile
+        count += self.push_target(Pos(x,y), player)
 
         # print(count, " targets count: ", len(self.targets))
 
@@ -53,7 +61,7 @@ class AI:
             for y, grid_val in enumerate(player.shots[x]):
                 if grid_val:
                     if player.get_grid_ship(Pos(x,y)): # HIT
-                        li = self.find_surrounding_positions(x, y)
+                        li = self.find_surrounding_positions(x, y, player)
 
         # print("total shots ", tot)
     
