@@ -209,7 +209,7 @@ class GameBoard:
                         if self.player_ai.shoot_grid(ai_grid_click):
                             # TODO this is disabled for testing purousses
                             # pass
-                            self.playing_ai = True
+                            # self.playing_ai = True
 
                             self.state = states.MOVE
                 case states.MOVE:
