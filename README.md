@@ -1,67 +1,42 @@
-# python-eindopdrachten-23-24-seger-sars-joshua-regnier
-python-eindopdrachten-23-24-seger-sars-joshua-regnier created by GitHub Classroom
+# Cosmic Confrontation
+This is originally a project created by GitHub Classroom.
 
 
-- Save data
-	- Per schip:
-		- x, y, horizontaal/verticaal
-		- waar geraakt
-		- ability available/ already used
-		- Cooldown applied from EMP (3 turns)
-		- (type)
-	- geschoten grid positions
-		- Boolean shot/not shot
-	- nickname
+
+## Current Status:
+
+- [x] Save data
 - Functional tasks
-	- [ ] Render grid status
-	- [x] Render ships
-	- [ ] Save game state to file
-	- [ ] Load game state from file
-	- [ ] Move ship
-	- [ ] Shoot Grid position
-		- [ ] Check if ship is on position
-	- [x] Menu
-	- [ ] Abilities:
-		- [ ] 
+	- [X] Render grid status
+	- [~] Render ships
+	- [X] Save/Load game state in file
+	- [x] Move ship
+	- [ ] Highlight selected ship	
+	- [X] Shoot Grid position
+
 - GUI
 	- Main menu
-		- [ ] New game
-		- [ ] Continue
-		- [ ] Previous games
-		- [ ] Nickname config
+		- [x] New game
+		- [x] Continue
+		- [x] Previous games
+		- [x] Nickname config
 	- In game
 		- [x] Grid
-		- [ ] Abilities
+		- [x] Abilities
 		- [ ] End turn
 		- [ ] Quit
 
 
 # TODO:
-## sprint 1
-- [ ] Pygame @Seger
-	- [x] grid (GameBoard class)
-	- [x] menu
-- [ ] Base class Ship @Joshua
-	- [x] Implemented without abilities
 
+## sprint 4
+- [ ] Improve AI @UnavailableDev
+- [ ] Ability for player to place their own ships
+- [ ] Ship rendering thing
+- [ ] General rendering?
+	- [ ] Look into PyGame sprites or other forms of pre determined shapes/data objects that can be passed from one function to another
+- [ ] Cleanup ship class
 
-## sprint 2
-- [x] Render ships
-
-## sprint 3
-- [x] Bug fix: ship rendering @Joshua
-- [x] Validate ship movements @Seger
-- [x] Save/Load JSON @Seger
-- [ ] Custom nicknames @Seger
-- [x] Shoot position @Joshua
-- [x] State machine which turn @Joshua
-- [x] win/loss condition @Joshua
-- [x] Dynamic board size between 8-16 (always a square shape)
-- [ ] Make abilities
-- [~] Make AI @Joshua
-- [x] Init state where the player (and AI) place their ships on the grid
-- [x] fix AI wasting a turn?
-- [ ] ability for player to place their own ships
 
 
 ## Feature request:
