@@ -42,7 +42,7 @@ class Player:
 
         # self.rand_ship_layout()
 
-    def shoot_ships(self, pos: Pos):
+    def shoot_ships(self, pos: Pos) -> bool:
         ship: BaseShip = self.get_grid_ship(pos)
         if ship:
             index: int
@@ -55,7 +55,8 @@ class Player:
             return True
         return False
 
-    def shoot_grid(self, pos: Pos):
+    # TODO: make the invalid detection?
+    def shoot_grid(self, pos: Pos) -> True:
         # if self.shots[pos.x][pos.y] == False:
         self.shots[pos.x][pos.y] = True
         self.shoot_ships(pos)
@@ -64,13 +65,13 @@ class Player:
         # Invalid, position was already hit
         return False
     
-    def new_rand_ship_layout(self):
+    def new_rand_ship_layout(self) -> None:
         for i in range(len(self.ships)):
             self.ships[i].set_position(Pos(0 + self.cols, i, True))
 
         self.rand_ship_layout()
 
-    def rand_ship_layout(self):
+    def rand_ship_layout(self) -> None:
         for i in range(len(self.ships)):
             while not self.new_ship_pos(i):
 
@@ -78,7 +79,7 @@ class Player:
 
             # print(i, self.ships[i].get_position())
 
-    def new_ship_pos(self, idx: int):
+    def new_ship_pos(self, idx: int) -> bool:
         size = self.ships[idx].get_size()
         hor: bool = bool(random.getrandbits(1))
 
@@ -227,7 +228,7 @@ class Player:
                     return self.ships[i]
         return None
 
-    def get_ship_shot(self, ship: BaseShip, pos: Pos):
+    def get_ship_shot(self, ship: BaseShip, pos: Pos) -> bool:
         ship_pos = ship.get_position()
         hits = ship.get_hits()
         
@@ -236,10 +237,10 @@ class Player:
         else:
             return hits[pos.y - ship_pos.y]
 
-    def get_grid_shot(self, pos: Pos):
+    def get_grid_shot(self, pos: Pos) -> bool:
         return self.shots[pos.x][pos.y]
 
-    def get_grid_color(self, pos: Pos, enemy=False):
+    def get_grid_color(self, pos: Pos, enemy=False) -> colors:
         color = colors.GRID.value
         if not enemy:
             if self.get_grid_ship(pos):
@@ -268,7 +269,6 @@ class Player:
 
     def set_nickname(self, new_nickname: str) -> None:
         self.nickname = new_nickname
-        return
 
     def get_nickname(self) -> str:
         return self.nickname
