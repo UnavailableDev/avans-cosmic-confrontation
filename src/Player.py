@@ -241,29 +241,29 @@ class Player:
         return self.shots[pos.x][pos.y]
 
     def get_grid_color(self, pos: Pos, enemy=False) -> colors:
-        color = colors.GRID.value
+        color = colors.GRID
         if not enemy:
             if self.get_grid_ship(pos):
-                color = colors.SHIP.value
+                color = colors.SHIP
 
         if self.get_grid_shot(pos):
             if enemy:
-                color = colors.VISIBLE.value
+                color = colors.VISIBLE
             else:
-                color = colors.SHOT.value
+                color = colors.SHOT
             
             ship = self.get_grid_ship(pos)
             if ship != None:
                 if enemy:
-                    color = colors.UNK_SHIP.value
+                    color = colors.UNK_SHIP
                     # see if the ship is hit in that position
                     if self.get_ship_shot(ship, pos):
-                        color = colors.HIT.value 
+                        color = colors.HIT 
                 else:
-                    color = colors.UNK_SHIP.value
+                    color = colors.UNK_SHIP
 
                     # if self.get_ship_shot(ship, pos):
-                    #     color = colors.HIT.value
+                    #     color = colors.HIT
 
         return color
 
