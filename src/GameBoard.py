@@ -316,8 +316,8 @@ class GameBoard:
         self.screen.fill(colors.BACKGROUND.value)
 
         # Draw the grid
-        self.renderer.draw_grid(self.player_ai, Pos(0, 0))
-        self.renderer.draw_grid(self.player, Pos(0, self.rows + 1))
+        self.renderer.draw_grid(self.player_ai, True, Pos(0, 0))
+        self.renderer.draw_grid(self.player, False, Pos(0, self.rows + 1))
 
         self.draw_ui()
 

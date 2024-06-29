@@ -254,13 +254,13 @@ class Player:
             
             ship = self.get_grid_ship(pos)
             if ship != None:
-                if enemy:
-                    color = colors.UNK_SHIP
-                    # see if the ship is hit in that position
-                    if self.get_ship_shot(ship, pos):
-                        color = colors.HIT 
-                else:
-                    color = colors.UNK_SHIP
+                # if enemy:
+                color = colors.UNK_SHIP
+                # see if the ship is hit in that position
+                if self.get_ship_shot(ship, pos):
+                    color = colors.HIT 
+                # else:
+                #     color = colors.UNK_SHIP
 
                     # if self.get_ship_shot(ship, pos):
                     #     color = colors.HIT
