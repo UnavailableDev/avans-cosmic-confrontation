@@ -8,6 +8,7 @@ from Defines import colors
 from enum import Enum
 
 from Visitor import Visitor
+from Render import Render
 
 
 class states(Enum):
@@ -45,6 +46,8 @@ class GameBoard:
         self.font = pygame.font.SysFont(None, 24)
         pygame.display.set_caption("Grid of Rectangles")
         self.setup_buttons()
+
+        self.renderer = Render(screen, rows, cols)
 
     def setup_buttons(self):
         for y in range(len(self.player.ships)):
@@ -313,8 +316,8 @@ class GameBoard:
         self.screen.fill(colors.BACKGROUND.value)
 
         # Draw the grid
-        self.draw_AI_grid()
-        self.draw_player_grid()
+        self.renderer.draw_grid(self.player_ai, True, Pos(0, 0))
+        self.renderer.draw_grid(self.player, False, Pos(0, self.rows + 1))
 
         self.draw_ui()
 
